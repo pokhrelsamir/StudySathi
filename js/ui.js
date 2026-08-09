@@ -1,193 +1,126 @@
 /* =========================================================
    StudySathi — UI Controller
+   Handles navigation, modals, theme, notifications and toast
 ========================================================= */
 
 const UI = {
 
     /* -----------------------------------------------------
-       Select Element
+       Application State
     ----------------------------------------------------- */
 
-    select(selector) {
-        return document.querySelector(selector);
-    },
-
+    currentSection: "dashboard",
 
     /* -----------------------------------------------------
-       Select Multiple Elements
+       Section Configuration
     ----------------------------------------------------- */
 
-    selectAll(selector) {
-        return document.querySelectorAll(selector);
-    },
+    sections: {
 
+        dashboard: {
+            title: "Dashboard",
+            subtitle: "Welcome back! Let's make today productive."
+        },
 
-    /* -----------------------------------------------------
-       Show Element
-    ----------------------------------------------------- */
+        tasks: {
+            title: "My Tasks",
+            subtitle: "Manage your study tasks and deadlines."
+        },
 
-    show(element) {
+        subjects: {
+            title: "My Subjects",
+            subtitle: "Organize and track your subjects."
+        },
 
-        if (!element) return;
+        timer: {
+            title: "Study Timer",
+            subtitle: "Focus on your work and take meaningful breaks."
+        },
 
-        element.classList.remove("hidden");
+        notes: {
+            title: "My Notes",
+            subtitle: "Keep your important study information organized."
+        },
 
-        element.style.display = "";
+        progress: {
+            title: "Study Progress",
+            subtitle: "Understand your study habits and progress."
+        },
 
-    },
-
-
-    /* -----------------------------------------------------
-       Hide Element
-    ----------------------------------------------------- */
-
-    hide(element) {
-
-        if (!element) return;
-
-        element.classList.add("hidden");
-
-        element.style.display = "none";
-
-    },
-
-
-    /* -----------------------------------------------------
-       Toggle Element
-    ----------------------------------------------------- */
-
-    toggle(element) {
-
-        if (!element) return;
-
-        element.classList.toggle("hidden");
-
-    },
-
-
-    /* -----------------------------------------------------
-       Set Text
-    ----------------------------------------------------- */
-
-    setText(element, text) {
-
-        if (!element) return;
-
-        element.textContent = text;
-
-    },
-
-
-    /* -----------------------------------------------------
-       Set HTML
-    ----------------------------------------------------- */
-
-    setHTML(element, html) {
-
-        if (!element) return;
-
-        element.innerHTML = html;
-
-    },
-
-
-    /* -----------------------------------------------------
-       Add Class
-    ----------------------------------------------------- */
-
-    addClass(element, className) {
-
-        if (!element) return;
-
-        element.classList.add(className);
-
-    },
-
-
-    /* -----------------------------------------------------
-       Remove Class
-    ----------------------------------------------------- */
-
-    removeClass(element, className) {
-
-        if (!element) return;
-
-        element.classList.remove(className);
-
-    },
-
-
-    /* -----------------------------------------------------
-       Toggle Class
-    ----------------------------------------------------- */
-
-    toggleClass(element, className) {
-
-        if (!element) return;
-
-        element.classList.toggle(className);
-
-    },
-
-
-    /* -----------------------------------------------------
-       Active Navigation
-    ----------------------------------------------------- */
-
-    setActiveNavigation(target) {
-
-        const navItems =
-            document.querySelectorAll(
-                ".nav-item"
-            );
-
-        navItems.forEach(item => {
-
-            item.classList.remove("active");
-
-        });
-
-        const activeItem =
-            document.querySelector(
-                `.nav-item[data-section="${target}"]`
-            );
-
-        if (activeItem) {
-
-            activeItem.classList.add("active");
-
+        goals: {
+            title: "Study Goals",
+            subtitle: "Set meaningful goals and track your progress."
         }
 
     },
 
 
-    /* -----------------------------------------------------
-       Show Section
-    ----------------------------------------------------- */
+    /* =====================================================
+       INITIALIZATION
+    ====================================================== */
 
-    showSection(sectionId) {
+    init() {
 
-        const sections =
+        this.setupNavigation();
+
+        this.setupModals();
+
+        this.setupTheme();
+
+        this.setupSidebar();
+
+        this.setupNotifications();
+
+        this.setupQuickActions();
+
+        this.updateCurrentDate();
+
+        this.loadSavedTheme();
+
+    },
+
+
+    /* =====================================================
+       NAVIGATION
+    ====================================================== */
+
+    setupNavigation() {
+
+        const navItems =
             document.querySelectorAll(
-                ".page-section"
+                ".nav-item[data-section]"
             );
 
-        sections.forEach(section => {
+        navItems.forEach(item => {
 
-            section.classList.remove("active");
+            item.addEventListener(
+                "click",
+                () => {
 
-            section.style.display = "none";
+                    const section =
+                        item.dataset.section;
+
+                    this.showSection(section);
+
+                }
+            );
 
         });
 
+    },
 
-        const target =
-            document.getElementById(sectionId);
 
-        if (!target) {
+    showSection(sectionName) {
+
+        const section =
+            document.querySelector(
+                `[data-page="${sectionName}"]`
+            );
+
+        if (!section) {
 
             console.warn(
-                `StudySathi: Section "${sectionId}" not found.`
+                `StudySathi: Section "${sectionName}" not found.`
             );
 
             return;
@@ -195,165 +128,157 @@ const UI = {
         }
 
 
-        target.style.display = "";
+        /* Hide all sections */
 
-        target.classList.add("active");
+        const sections =
+            document.querySelectorAll(
+                ".page-section"
+            );
 
-        this.setActiveNavigation(sectionId);
+        sections.forEach(page => {
 
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
+            page.classList.remove("active");
+
         });
 
-    },
+
+        /* Show selected section */
+
+        section.classList.add("active");
 
 
-    /* -----------------------------------------------------
-       Toast Notification
-    ----------------------------------------------------- */
+        /* Update navigation */
 
-    toast(
-        message,
-        type = "info",
-        duration = 3000
-    ) {
-
-        let container =
-            document.querySelector(
-                ".toast-container"
+        const navItems =
+            document.querySelectorAll(
+                ".nav-item[data-section]"
             );
 
+        navItems.forEach(item => {
 
-        if (!container) {
-
-            container =
-                document.createElement("div");
-
-            container.className =
-                "toast-container";
-
-            document.body.appendChild(
-                container
+            item.classList.toggle(
+                "active",
+                item.dataset.section === sectionName
             );
+
+        });
+
+
+        /* Update page heading */
+
+        const sectionInfo =
+            this.sections[sectionName];
+
+        if (sectionInfo) {
+
+            const title =
+                document.getElementById(
+                    "pageTitle"
+                );
+
+            const subtitle =
+                document.getElementById(
+                    "pageSubtitle"
+                );
+
+
+            if (title) {
+
+                title.textContent =
+                    sectionInfo.title;
+
+            }
+
+
+            if (subtitle) {
+
+                subtitle.textContent =
+                    sectionInfo.subtitle;
+
+            }
 
         }
 
 
-        const toast =
-            document.createElement("div");
-
-        toast.className =
-            `toast toast-${type}`;
+        this.currentSection =
+            sectionName;
 
 
-        const icons = {
+        /* Close mobile sidebar */
 
-            success: "✓",
+        this.closeSidebar();
 
-            error: "✕",
-
-            warning: "⚠",
-
-            info: "ⓘ"
-
-        };
+    },
 
 
-        toast.innerHTML = `
-            <span class="toast-icon">
-                ${icons[type] || icons.info}
-            </span>
+    /* =====================================================
+       SIDEBAR
+    ====================================================== */
 
-            <span class="toast-message">
-                ${message}
-            </span>
+    setupSidebar() {
 
-            <button
-                class="toast-close"
-                type="button"
-                aria-label="Close notification"
-            >
-                ×
-            </button>
-        `;
+        const menuToggle =
+            document.getElementById(
+                "menuToggle"
+            );
 
-
-        container.appendChild(toast);
-
-
-        requestAnimationFrame(() => {
-
-            toast.classList.add("show");
-
-        });
-
-
-        const closeButton =
-            toast.querySelector(
-                ".toast-close"
+        const sidebar =
+            document.getElementById(
+                "sidebar"
             );
 
 
-        const removeToast = () => {
-
-            toast.classList.remove("show");
-
-            setTimeout(() => {
-
-                toast.remove();
-
-            }, 250);
-
-        };
+        if (!menuToggle || !sidebar) {
+            return;
+        }
 
 
-        closeButton.addEventListener(
+        menuToggle.addEventListener(
             "click",
-            removeToast
+            () => {
+
+                sidebar.classList.toggle(
+                    "open"
+                );
+
+            }
         );
 
 
-        setTimeout(
-            removeToast,
-            duration
+        /* Close sidebar when clicking outside */
+
+        document.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    window.innerWidth <= 900 &&
+                    sidebar.classList.contains("open") &&
+                    !sidebar.contains(event.target) &&
+                    !menuToggle.contains(event.target)
+                ) {
+
+                    this.closeSidebar();
+
+                }
+
+            }
         );
 
     },
 
 
-    /* -----------------------------------------------------
-       Loading State
-    ----------------------------------------------------- */
+    closeSidebar() {
 
-    setLoading(
-        element,
-        loading = true
-    ) {
-
-        if (!element) return;
-
-
-        if (loading) {
-
-            element.classList.add(
-                "loading"
+        const sidebar =
+            document.getElementById(
+                "sidebar"
             );
 
-            element.setAttribute(
-                "aria-busy",
-                "true"
-            );
+        if (sidebar) {
 
-        } else {
-
-            element.classList.remove(
-                "loading"
-            );
-
-            element.setAttribute(
-                "aria-busy",
-                "false"
+            sidebar.classList.remove(
+                "open"
             );
 
         }
@@ -361,32 +286,251 @@ const UI = {
     },
 
 
-    /* -----------------------------------------------------
-       Modal
-    ----------------------------------------------------- */
+    /* =====================================================
+       QUICK ACTIONS
+    ====================================================== */
 
-    openModal(modal) {
+    setupQuickActions() {
 
-        if (!modal) return;
+        const actions =
+            document.querySelectorAll(
+                "[data-section]"
+            );
 
-        modal.classList.add("active");
+
+        actions.forEach(action => {
+
+            if (
+                action.classList.contains(
+                    "nav-item"
+                )
+            ) {
+                return;
+            }
+
+
+            action.addEventListener(
+                "click",
+                () => {
+
+                    const section =
+                        action.dataset.section;
+
+                    if (section) {
+
+                        this.showSection(
+                            section
+                        );
+
+                    }
+
+                }
+            );
+
+        });
+
+    },
+
+
+    /* =====================================================
+       MODALS
+    ====================================================== */
+
+    setupModals() {
+
+        /* Open buttons */
+
+        const modalButtons = {
+
+            addTaskButton: "taskModal",
+
+            addSubjectButton: "subjectModal",
+
+            addNoteButton: "noteModal",
+
+            addGoalButton: "goalModal"
+
+        };
+
+
+        Object.entries(
+            modalButtons
+        ).forEach(
+            ([buttonId, modalId]) => {
+
+                const button =
+                    document.getElementById(
+                        buttonId
+                    );
+
+                if (button) {
+
+                    button.addEventListener(
+                        "click",
+                        () => {
+
+                            this.openModal(
+                                modalId
+                            );
+
+                        }
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* Close buttons */
+
+        const closeButtons =
+            document.querySelectorAll(
+                "[data-close-modal]"
+            );
+
+
+        closeButtons.forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const modalId =
+                        button.dataset.closeModal;
+
+                    this.closeModal(
+                        modalId
+                    );
+
+                }
+            );
+
+        });
+
+
+        /* Close when clicking overlay */
+
+        const overlays =
+            document.querySelectorAll(
+                ".modal-overlay"
+            );
+
+
+        overlays.forEach(overlay => {
+
+            overlay.addEventListener(
+                "click",
+                event => {
+
+                    if (
+                        event.target === overlay
+                    ) {
+
+                        this.closeModal(
+                            overlay.id
+                        );
+
+                    }
+
+                }
+            );
+
+        });
+
+
+        /* Close with Escape */
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    this.closeAllModals();
+
+                }
+
+            }
+        );
+
+    },
+
+
+    openModal(modalId) {
+
+        const modal =
+            document.getElementById(
+                modalId
+            );
+
+        if (!modal) {
+            return;
+        }
+
+
+        modal.classList.add(
+            "active"
+        );
+
 
         document.body.classList.add(
             "modal-open"
         );
 
+
+        const firstInput =
+            modal.querySelector(
+                "input, textarea, select"
+            );
+
+
+        if (firstInput) {
+
+            setTimeout(
+                () => firstInput.focus(),
+                100
+            );
+
+        }
+
     },
 
 
-    closeModal(modal) {
+    closeModal(modalId) {
 
-        if (!modal) return;
+        const modal =
+            document.getElementById(
+                modalId
+            );
 
-        modal.classList.remove("active");
+        if (!modal) {
+            return;
+        }
 
-        document.body.classList.remove(
-            "modal-open"
+
+        modal.classList.remove(
+            "active"
         );
+
+
+        const activeModals =
+            document.querySelectorAll(
+                ".modal-overlay.active"
+            );
+
+
+        if (
+            activeModals.length === 0
+        ) {
+
+            document.body.classList.remove(
+                "modal-open"
+            );
+
+        }
 
     },
 
@@ -395,8 +539,9 @@ const UI = {
 
         const modals =
             document.querySelectorAll(
-                ".modal-overlay"
+                ".modal-overlay.active"
             );
+
 
         modals.forEach(modal => {
 
@@ -406,6 +551,7 @@ const UI = {
 
         });
 
+
         document.body.classList.remove(
             "modal-open"
         );
@@ -413,208 +559,531 @@ const UI = {
     },
 
 
-    /* -----------------------------------------------------
-       Update Current Date
-    ----------------------------------------------------- */
+    /* =====================================================
+       THEME
+    ====================================================== */
 
-    updateDate() {
+    setupTheme() {
 
-        const dateElement =
-            document.querySelector(
-                "[data-current-date]"
-            );
-
-        if (!dateElement) return;
-
-
-        const now = new Date();
-
-
-        const formatted =
-            now.toLocaleDateString(
-                "en-US",
-                {
-                    weekday: "long",
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric"
-                }
+        const themeToggle =
+            document.getElementById(
+                "themeToggle"
             );
 
 
-        dateElement.textContent =
-            formatted;
-
-    },
-
-
-    /* -----------------------------------------------------
-       Update Greeting
-    ----------------------------------------------------- */
-
-    updateGreeting() {
-
-        const greetingElement =
-            document.querySelector(
-                "[data-greeting]"
-            );
-
-        if (!greetingElement) return;
-
-
-        const hour =
-            new Date().getHours();
-
-
-        let greeting;
-
-
-        if (hour < 12) {
-
-            greeting = "Good Morning";
-
-        } else if (hour < 18) {
-
-            greeting = "Good Afternoon";
-
-        } else {
-
-            greeting = "Good Evening";
-
+        if (!themeToggle) {
+            return;
         }
 
 
-        greetingElement.textContent =
-            greeting;
+        themeToggle.addEventListener(
+            "click",
+            () => {
+
+                this.toggleTheme();
+
+            }
+        );
 
     },
 
-
-    /* -----------------------------------------------------
-       Dark Mode
-    ----------------------------------------------------- */
-
-    setTheme(theme) {
-
-        const root =
-            document.documentElement;
-
-
-        if (theme === "dark") {
-
-            root.setAttribute(
-                "data-theme",
-                "dark"
-            );
-
-        } else {
-
-            root.removeAttribute(
-                "data-theme"
-            );
-
-        }
-
-
-        const themeIcon =
-            document.querySelector(
-                "[data-theme-icon]"
-            );
-
-
-        if (themeIcon) {
-
-            themeIcon.textContent =
-                theme === "dark"
-                    ? "☀️"
-                    : "🌙";
-
-        }
-
-    },
-
-
-    /* -----------------------------------------------------
-       Toggle Theme
-    ----------------------------------------------------- */
 
     toggleTheme() {
 
-        const currentTheme =
-            document.documentElement
-                .getAttribute(
-                    "data-theme"
-                );
+        const isDark =
+            document.body.classList.toggle(
+                "dark-theme"
+            );
 
 
-        const newTheme =
-            currentTheme === "dark"
-                ? "light"
-                : "dark";
-
-
-        this.setTheme(
-            newTheme
+        this.updateThemeIcon(
+            isDark
         );
 
 
-        if (
-            typeof StorageManager !==
-            "undefined"
-        ) {
+        StorageManager.save(
+            "theme",
+            isDark ? "dark" : "light"
+        );
 
-            const settings =
-                StorageManager.get(
-                    "settings",
-                    {}
-                );
+    },
 
 
-            settings.darkMode =
-                newTheme === "dark";
+    loadSavedTheme() {
+
+        const savedTheme =
+            StorageManager.get(
+                "theme",
+                "light"
+            );
 
 
-            StorageManager.save(
-                "settings",
-                settings
+        const isDark =
+            savedTheme === "dark";
+
+
+        if (isDark) {
+
+            document.body.classList.add(
+                "dark-theme"
             );
 
         }
 
-    },
 
-
-    /* -----------------------------------------------------
-       Initialize Theme
-    ----------------------------------------------------- */
-
-    initializeTheme() {
-
-        if (
-            typeof StorageManager ===
-            "undefined"
-        ) return;
-
-
-        const settings =
-            StorageManager.get(
-                "settings",
-                {}
-            );
-
-
-        this.setTheme(
-            settings.darkMode
-                ? "dark"
-                : "light"
+        this.updateThemeIcon(
+            isDark
         );
 
     },
 
 
-    /* -----------------------------------------------------
-       Escape HTML
-    ----------------------------------------------------- */
+    updateThemeIcon(isDark) {
+
+        const themeToggle =
+            document.getElementById(
+                "themeToggle"
+            );
+
+
+        if (!themeToggle) {
+            return;
+        }
+
+
+        themeToggle.textContent =
+            isDark ? "☀️" : "🌙";
+
+    },
+
+
+    /* =====================================================
+       NOTIFICATIONS
+    ====================================================== */
+
+    setupNotifications() {
+
+        const button =
+            document.getElementById(
+                "notificationButton"
+            );
+
+        const panel =
+            document.getElementById(
+                "notificationPanel"
+            );
+
+
+        if (!button || !panel) {
+            return;
+        }
+
+
+        button.addEventListener(
+            "click",
+            event => {
+
+                event.stopPropagation();
+
+                panel.classList.toggle(
+                    "active"
+                );
+
+                this.renderNotifications();
+
+            }
+        );
+
+
+        document.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    !panel.contains(
+                        event.target
+                    ) &&
+                    !button.contains(
+                        event.target
+                    )
+                ) {
+
+                    panel.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+
+        const clearButton =
+            document.getElementById(
+                "clearNotifications"
+            );
+
+
+        if (clearButton) {
+
+            clearButton.addEventListener(
+                "click",
+                () => {
+
+                    StorageManager.save(
+                        "notifications",
+                        []
+                    );
+
+                    this.renderNotifications();
+
+                    this.updateNotificationDot();
+
+                }
+            );
+
+        }
+
+
+        this.renderNotifications();
+
+    },
+
+
+    renderNotifications() {
+
+        const container =
+            document.getElementById(
+                "notificationList"
+            );
+
+
+        if (!container) {
+            return;
+        }
+
+
+        const notifications =
+            StorageManager.get(
+                "notifications",
+                []
+            );
+
+
+        if (
+            notifications.length === 0
+        ) {
+
+            container.innerHTML = `
+
+                <div class="empty-state">
+
+                    <span>🔔</span>
+
+                    <p>No notifications</p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML =
+            notifications
+                .map(
+                    notification => `
+
+                    <div class="notification-item">
+
+                        <span class="notification-icon">
+                            ${notification.icon || "🔔"}
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                ${this.escapeHTML(
+                                    notification.title ||
+                                    "Notification"
+                                )}
+                            </strong>
+
+                            <p>
+                                ${this.escapeHTML(
+                                    notification.message ||
+                                    ""
+                                )}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                `
+                )
+                .join("");
+
+    },
+
+
+    addNotification(
+        title,
+        message,
+        icon = "🔔"
+    ) {
+
+        const notifications =
+            StorageManager.get(
+                "notifications",
+                []
+            );
+
+
+        notifications.unshift({
+
+            id: generateId(
+                "notification"
+            ),
+
+            title,
+
+            message,
+
+            icon,
+
+            timestamp:
+                new Date().toISOString()
+
+        });
+
+
+        StorageManager.save(
+            "notifications",
+            notifications.slice(0, 20)
+        );
+
+
+        this.updateNotificationDot();
+
+        this.renderNotifications();
+
+    },
+
+
+    updateNotificationDot() {
+
+        const dot =
+            document.getElementById(
+                "notificationDot"
+            );
+
+
+        if (!dot) {
+            return;
+        }
+
+
+        const notifications =
+            StorageManager.get(
+                "notifications",
+                []
+            );
+
+
+        dot.style.display =
+            notifications.length > 0
+                ? "block"
+                : "none";
+
+    },
+
+
+    /* =====================================================
+       TOAST
+    ====================================================== */
+
+    showToast(
+        message,
+        type = "success",
+        title = null
+    ) {
+
+        const toast =
+            document.getElementById(
+                "toast"
+            );
+
+
+        const toastMessage =
+            document.getElementById(
+                "toastMessage"
+            );
+
+
+        const toastTitle =
+            document.getElementById(
+                "toastTitle"
+            );
+
+
+        const toastIcon =
+            document.getElementById(
+                "toastIcon"
+            );
+
+
+        if (
+            !toast ||
+            !toastMessage ||
+            !toastTitle ||
+            !toastIcon
+        ) {
+            return;
+        }
+
+
+        const toastTypes = {
+
+            success: {
+                icon: "✓",
+                title: "Success"
+            },
+
+            error: {
+                icon: "✕",
+                title: "Error"
+            },
+
+            warning: {
+                icon: "⚠",
+                title: "Warning"
+            },
+
+            info: {
+                icon: "ℹ",
+                title: "Information"
+            }
+
+        };
+
+
+        const config =
+            toastTypes[type] ||
+            toastTypes.success;
+
+
+        toastMessage.textContent =
+            message;
+
+
+        toastTitle.textContent =
+            title || config.title;
+
+
+        toastIcon.textContent =
+            config.icon;
+
+
+        toast.className =
+            `toast ${type}`;
+
+
+        requestAnimationFrame(
+            () => {
+
+                toast.classList.add(
+                    "show"
+                );
+
+            }
+        );
+
+
+        clearTimeout(
+            this.toastTimeout
+        );
+
+
+        this.toastTimeout =
+            setTimeout(
+                () => {
+
+                    toast.classList.remove(
+                        "show"
+                    );
+
+                },
+                3500
+            );
+
+    },
+
+
+    /* =====================================================
+       DATE
+    ====================================================== */
+
+    updateCurrentDate() {
+
+        const element =
+            document.getElementById(
+                "currentDate"
+            );
+
+
+        if (!element) {
+            return;
+        }
+
+
+        element.textContent =
+            getFormattedDate();
+
+    },
+
+
+    /* =====================================================
+       LOADING STATE
+    ====================================================== */
+
+    showLoading(
+        element
+    ) {
+
+        if (!element) {
+            return;
+        }
+
+
+        element.classList.add(
+            "loading"
+        );
+
+    },
+
+
+    hideLoading(
+        element
+    ) {
+
+        if (!element) {
+            return;
+        }
+
+
+        element.classList.remove(
+            "loading"
+        );
+
+    },
+
+
+    /* =====================================================
+       HTML SECURITY HELPER
+    ====================================================== */
 
     escapeHTML(value) {
 
@@ -646,18 +1115,14 @@ const UI = {
 
 
 /* =========================================================
-   UI Initialization
+   Initialize UI
 ========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
     () => {
 
-        UI.updateDate();
-
-        UI.updateGreeting();
-
-        UI.initializeTheme();
+        UI.init();
 
     }
 );
