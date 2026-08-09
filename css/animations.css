@@ -1,0 +1,1012 @@
+/* =========================================================
+   StudySathi — Animation Stylesheet
+========================================================= */
+
+
+/* =========================================================
+   1. PAGE LOAD
+========================================================= */
+
+@keyframes pageFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes pageSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body {
+    animation: pageFadeIn 0.45s ease both;
+}
+
+
+/* =========================================================
+   2. SIDEBAR ANIMATION
+========================================================= */
+
+@keyframes sidebarEnter {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.sidebar {
+    animation: sidebarEnter 0.5s ease both;
+}
+
+
+/* =========================================================
+   3. SIDEBAR NAVIGATION
+========================================================= */
+
+.nav-item {
+    animation: navItemEnter 0.35s ease both;
+}
+
+.nav-item:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.nav-item:nth-child(2) {
+    animation-delay: 0.08s;
+}
+
+.nav-item:nth-child(3) {
+    animation-delay: 0.11s;
+}
+
+.nav-item:nth-child(4) {
+    animation-delay: 0.14s;
+}
+
+.nav-item:nth-child(5) {
+    animation-delay: 0.17s;
+}
+
+@keyframes navItemEnter {
+    from {
+        opacity: 0;
+        transform: translateX(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+/* =========================================================
+   4. TOPBAR
+========================================================= */
+
+.topbar {
+    animation: pageSlideUp 0.45s ease both;
+}
+
+
+/* =========================================================
+   5. WELCOME SECTION
+========================================================= */
+
+.welcome-section {
+    animation: pageSlideUp 0.5s ease 0.05s both;
+}
+
+
+/* =========================================================
+   6. STATISTICS CARDS
+========================================================= */
+
+.stat-card {
+    animation: cardEnter 0.5s ease both;
+}
+
+.stat-card:nth-child(1) {
+    animation-delay: 0.08s;
+}
+
+.stat-card:nth-child(2) {
+    animation-delay: 0.13s;
+}
+
+.stat-card:nth-child(3) {
+    animation-delay: 0.18s;
+}
+
+.stat-card:nth-child(4) {
+    animation-delay: 0.23s;
+}
+
+@keyframes cardEnter {
+    from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* =========================================================
+   7. DASHBOARD CARDS
+========================================================= */
+
+.dashboard-card {
+    animation: dashboardCardEnter 0.55s ease both;
+}
+
+.dashboard-card:nth-child(1) {
+    animation-delay: 0.15s;
+}
+
+.dashboard-card:nth-child(2) {
+    animation-delay: 0.22s;
+}
+
+@keyframes dashboardCardEnter {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================================
+   8. CARD HOVER
+========================================================= */
+
+.dashboard-card,
+.subject-card,
+.note-card,
+.goal-item,
+.quick-action,
+.stat-card {
+    will-change: transform;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-2px);
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* =========================================================
+   9. BRAND ICON
+========================================================= */
+
+.brand-icon {
+    animation: brandPulse 3s ease-in-out infinite;
+}
+
+@keyframes brandPulse {
+
+    0%,
+    100% {
+        box-shadow:
+            0 8px 20px rgba(99, 102, 241, 0.20);
+    }
+
+    50% {
+        box-shadow:
+            0 10px 28px rgba(99, 102, 241, 0.38);
+    }
+}
+
+
+/* =========================================================
+   10. ICON BUTTON
+========================================================= */
+
+.icon-button:hover {
+    animation: buttonPop 0.25s ease both;
+}
+
+@keyframes buttonPop {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.07);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+/* =========================================================
+   11. BUTTON PRESS EFFECT
+========================================================= */
+
+.primary-button:active,
+.secondary-button:active,
+.quick-action:active,
+.icon-button:active,
+.timer-control:active {
+    transform: scale(0.97);
+}
+
+
+/* =========================================================
+   12. PROGRESS BAR
+========================================================= */
+
+.progress-fill {
+    transform-origin: left;
+    animation: progressGrow 1.1s ease both;
+}
+
+@keyframes progressGrow {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+
+/* =========================================================
+   13. CIRCULAR PROGRESS
+========================================================= */
+
+.circular-progress {
+    animation: progressRotateIn 1s ease both;
+}
+
+@keyframes progressRotateIn {
+    from {
+        opacity: 0;
+        transform: rotate(-90deg) scale(0.85);
+    }
+
+    to {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+    }
+}
+
+.progress-inner {
+    animation: progressContentIn 0.7s ease 0.4s both;
+}
+
+@keyframes progressContentIn {
+    from {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* =========================================================
+   14. CHART ANIMATION
+========================================================= */
+
+.chart-line::before {
+    transform-origin: left center;
+    animation: chartDraw 1.4s ease both;
+}
+
+@keyframes chartDraw {
+    from {
+        opacity: 0;
+        clip-path: inset(0 100% 0 0);
+    }
+
+    to {
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+.chart-line span {
+    animation: chartPointAppear 0.45s ease both;
+}
+
+.chart-line span:nth-child(1) {
+    animation-delay: 0.45s;
+}
+
+.chart-line span:nth-child(2) {
+    animation-delay: 0.60s;
+}
+
+.chart-line span:nth-child(3) {
+    animation-delay: 0.75s;
+}
+
+.chart-line span:nth-child(4) {
+    animation-delay: 0.90s;
+}
+
+.chart-line span:nth-child(5) {
+    animation-delay: 1.05s;
+}
+
+.chart-line span:nth-child(6) {
+    animation-delay: 1.20s;
+}
+
+.chart-line span:nth-child(7) {
+    animation-delay: 1.35s;
+}
+
+@keyframes chartPointAppear {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    70% {
+        transform: scale(1.2);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* =========================================================
+   15. TASK ANIMATION
+========================================================= */
+
+.task-item {
+    animation: taskEnter 0.35s ease both;
+}
+
+.task-item:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.task-item:nth-child(2) {
+    animation-delay: 0.10s;
+}
+
+.task-item:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.task-item:nth-child(4) {
+    animation-delay: 0.20s;
+}
+
+.task-item:nth-child(5) {
+    animation-delay: 0.25s;
+}
+
+@keyframes taskEnter {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+/* =========================================================
+   16. TASK COMPLETION
+========================================================= */
+
+.task-checkbox input:checked + span {
+    animation: checkboxPop 0.3s ease both;
+}
+
+@keyframes checkboxPop {
+    0% {
+        transform: scale(0.75);
+    }
+
+    60% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+/* =========================================================
+   17. COMPLETED TASK
+========================================================= */
+
+.task-checkbox input:checked
+    ~ .task-info strong {
+    animation: taskComplete 0.35s ease both;
+}
+
+@keyframes taskComplete {
+    from {
+        opacity: 0.7;
+    }
+
+    to {
+        opacity: 0.45;
+        text-decoration: line-through;
+    }
+}
+
+
+/* =========================================================
+   18. ACTIVITY ITEMS
+========================================================= */
+
+.activity-item {
+    animation: activityEnter 0.4s ease both;
+}
+
+.activity-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.activity-item:nth-child(2) {
+    animation-delay: 0.17s;
+}
+
+.activity-item:nth-child(3) {
+    animation-delay: 0.24s;
+}
+
+.activity-item:nth-child(4) {
+    animation-delay: 0.31s;
+}
+
+@keyframes activityEnter {
+    from {
+        opacity: 0;
+        transform: translateX(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+/* =========================================================
+   19. QUICK ACTIONS
+========================================================= */
+
+.quick-action {
+    animation: quickActionEnter 0.45s ease both;
+}
+
+.quick-action:nth-child(1) {
+    animation-delay: 0.10s;
+}
+
+.quick-action:nth-child(2) {
+    animation-delay: 0.16s;
+}
+
+.quick-action:nth-child(3) {
+    animation-delay: 0.22s;
+}
+
+.quick-action:nth-child(4) {
+    animation-delay: 0.28s;
+}
+
+@keyframes quickActionEnter {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.quick-action:hover .action-arrow {
+    animation: arrowMove 0.4s ease both;
+}
+
+@keyframes arrowMove {
+    0% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(4px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+
+/* =========================================================
+   20. SUBJECT CARDS
+========================================================= */
+
+.subject-card {
+    animation: subjectEnter 0.45s ease both;
+}
+
+.subject-card:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.subject-card:nth-child(2) {
+    animation-delay: 0.10s;
+}
+
+.subject-card:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.subject-card:nth-child(4) {
+    animation-delay: 0.20s;
+}
+
+.subject-card:nth-child(5) {
+    animation-delay: 0.25s;
+}
+
+.subject-card:nth-child(6) {
+    animation-delay: 0.30s;
+}
+
+@keyframes subjectEnter {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.subject-card:hover .subject-icon {
+    animation: iconBounce 0.45s ease both;
+}
+
+@keyframes iconBounce {
+    0% {
+        transform: scale(1);
+    }
+
+    40% {
+        transform: scale(1.12) rotate(-3deg);
+    }
+
+    70% {
+        transform: scale(0.96) rotate(2deg);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+/* =========================================================
+   21. NOTES
+========================================================= */
+
+.note-card {
+    animation: noteEnter 0.45s ease both;
+}
+
+.note-card:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.note-card:nth-child(2) {
+    animation-delay: 0.10s;
+}
+
+.note-card:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.note-card:nth-child(4) {
+    animation-delay: 0.20s;
+}
+
+.note-card:nth-child(5) {
+    animation-delay: 0.25s;
+}
+
+.note-card:nth-child(6) {
+    animation-delay: 0.30s;
+}
+
+@keyframes noteEnter {
+    from {
+        opacity: 0;
+        transform: translateY(12px) rotate(0.5deg);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) rotate(0);
+    }
+}
+
+
+/* =========================================================
+   22. TIMER
+========================================================= */
+
+.timer-card {
+    animation: timerEnter 0.6s ease both;
+}
+
+@keyframes timerEnter {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.timer-display {
+    animation: timerDisplayIn 0.8s ease both;
+}
+
+@keyframes timerDisplayIn {
+    from {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* =========================================================
+   23. TIMER RUNNING
+========================================================= */
+
+.timer-running .timer-display {
+    animation: timerPulse 2s ease-in-out infinite;
+}
+
+@keyframes timerPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.75;
+    }
+}
+
+
+/* =========================================================
+   24. TIMER PROGRESS
+========================================================= */
+
+.timer-progress-bar {
+    transition:
+        width 1s linear;
+}
+
+
+/* =========================================================
+   25. MODAL ANIMATION
+========================================================= */
+
+.modal-overlay.active .modal {
+    animation: modalEnter 0.3s ease both;
+}
+
+@keyframes modalEnter {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* =========================================================
+   26. MODAL CLOSE
+========================================================= */
+
+.modal-close:hover {
+    animation: closeRotate 0.25s ease both;
+}
+
+@keyframes closeRotate {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(90deg);
+    }
+}
+
+
+/* =========================================================
+   27. NOTIFICATION PANEL
+========================================================= */
+
+.notification-item {
+    animation: notificationEnter 0.35s ease both;
+}
+
+.notification-item:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.notification-item:nth-child(2) {
+    animation-delay: 0.10s;
+}
+
+.notification-item:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+@keyframes notificationEnter {
+    from {
+        opacity: 0;
+        transform: translateX(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+/* =========================================================
+   28. NOTIFICATION DOT
+========================================================= */
+
+.notification-dot {
+    animation: notificationPulse 2s ease-in-out infinite;
+}
+
+@keyframes notificationPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.35);
+        opacity: 0.65;
+    }
+}
+
+
+/* =========================================================
+   29. LOADING SHIMMER
+========================================================= */
+
+.loading-shimmer {
+
+    position: relative;
+
+    overflow: hidden;
+
+    background: var(--bg-tertiary);
+}
+
+.loading-shimmer::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    transform: translateX(-100%);
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.35),
+            transparent
+        );
+
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+
+/* =========================================================
+   30. SUCCESS ANIMATION
+========================================================= */
+
+.success-animation {
+    animation: successPop 0.55s cubic-bezier(
+        0.175,
+        0.885,
+        0.32,
+        1.275
+    ) both;
+}
+
+@keyframes successPop {
+
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    70% {
+        transform: scale(1.12);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* =========================================================
+   31. SHAKE ERROR
+========================================================= */
+
+.shake {
+    animation: shakeError 0.4s ease both;
+}
+
+@keyframes shakeError {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-6px);
+    }
+
+    40% {
+        transform: translateX(6px);
+    }
+
+    60% {
+        transform: translateX(-4px);
+    }
+
+    80% {
+        transform: translateX(4px);
+    }
+}
+
+
+/* =========================================================
+   32. FLOATING EFFECT
+========================================================= */
+
+.float-animation {
+    animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+
+/* =========================================================
+   33. FOCUS EFFECT
+========================================================= */
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+
+    animation: inputFocus 0.25s ease both;
+}
+
+@keyframes inputFocus {
+
+    from {
+        box-shadow:
+            0 0 0 0 rgba(99, 102, 241, 0);
+    }
+
+    to {
+        box-shadow:
+            0 0 0 3px rgba(99, 102, 241, 0.08);
+    }
+}
+
+
+/* =========================================================
+   34. REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.01ms !important;
+
+        scroll-behavior: auto !important;
+    }
+}
