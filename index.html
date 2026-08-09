@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="StudySathi - Personal Student Productivity and Study Management Dashboard"
+    >
+
+    <meta
+        name="theme-color"
+        content="#6366f1"
+    >
+
+    <title>StudySathi — Student Productivity Dashboard</title>
+
+    <!-- Google Font -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Animations -->
+    <link rel="stylesheet" href="css/animations.css">
+
+    <!-- Responsive Styles -->
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+
+    <!-- =====================================================
+         APPLICATION
+    ====================================================== -->
+
+    <div class="app-container">
+
+        <!-- =================================================
+             SIDEBAR
+        ================================================== -->
+
+        <aside class="sidebar" id="sidebar">
+
+            <!-- Brand -->
+            <div class="sidebar-brand">
+
+                <div class="brand-icon">
+                    📚
+                </div>
+
+                <div class="brand-content">
+                    <h1>StudySathi</h1>
+                    <span>Study Smarter</span>
+                </div>
+
+            </div>
+
+
+            <!-- Navigation -->
+            <nav class="sidebar-nav">
+
+                <p class="nav-section-title">
+                    MAIN
+                </p>
+
+                <a
+                    href="#dashboard"
+                    class="nav-item active"
+                    data-section="dashboard"
+                >
+                    <span class="nav-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+
+
+                <a
+                    href="#subjects"
+                    class="nav-item"
+                    data-section="subjects"
+                >
+                    <span class="nav-icon">📚</span>
+                    <span>Subjects</span>
+                </a>
+
+
+                <a
+                    href="#tasks"
+                    class="nav-item"
+                    data-section="tasks"
+                >
+                    <span class="nav-icon">✅</span>
+                    <span>Tasks</span>
+                </a>
+
+
+                <a
+                    href="#timer"
+                    class="nav-item"
+                    data-section="timer"
+                >
+                    <span class="nav-icon">⏱️</span>
+                    <span>Study Timer</span>
+                </a>
+
+
+                <a
+                    href="#goals"
+                    class="nav-item"
+                    data-section="goals"
+                >
+                    <span class="nav-icon">🎯</span>
+                    <span>Goals</span>
+                </a>
+
+
+                <a
+                    href="#notes"
+                    class="nav-item"
+                    data-section="notes"
+                >
+                    <span class="nav-icon">📝</span>
+                    <span>Notes</span>
+                </a>
+
+
+                <p class="nav-section-title nav-section-secondary">
+                    SYSTEM
+                </p>
+
+
+                <a
+                    href="#settings"
+                    class="nav-item"
+                    data-section="settings"
+                >
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </a>
+
+            </nav>
+
+
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+
+                <div class="study-tip">
+
+                    <div class="tip-icon">
+                        💡
+                    </div>
+
+                    <div>
+                        <strong>Study Tip</strong>
+                        <p>
+                            Small progress every day
+                            creates big results.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =================================================
+             MAIN CONTENT
+        ================================================== -->
+
+        <main class="main-content">
+
+            <!-- =================================================
+                 TOPBAR
+            ================================================== -->
+
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button
+                        class="menu-toggle"
+                        id="menuToggle"
+                        aria-label="Toggle navigation"
+                    >
+                        ☰
+                    </button>
+
+                    <div class="page-heading">
+
+                        <span class="page-label">
+                            STUDENT DASHBOARD
+                        </span>
+
+                        <h2>
+                            Study Dashboard
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="topbar-actions">
+
+                    <!-- Search -->
+                    <button
+                        class="icon-button"
+                        id="searchButton"
+                        aria-label="Search"
+                    >
+                        🔍
+                    </button>
+
+
+                    <!-- Notifications -->
+                    <button
+                        class="icon-button notification-button"
+                        id="notificationButton"
+                        aria-label="Notifications"
+                    >
+                        🔔
+                        <span class="notification-dot"></span>
+                    </button>
+
+
+                    <!-- Theme -->
+                    <button
+                        class="icon-button"
+                        id="themeToggle"
+                        aria-label="Toggle theme"
+                    >
+                        🌙
+                    </button>
+
+
+                    <!-- Profile -->
+                    <div class="profile">
+
+                        <div class="profile-avatar">
+                            SP
+                        </div>
+
+                        <div class="profile-info">
+                            <strong>Student</strong>
+                            <span>Keep learning</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- =================================================
+                 DASHBOARD CONTENT
+            ================================================== -->
+
+            <section
+                class="dashboard-section"
+                id="dashboard"
+            >
+
+                <!-- Welcome -->
+                <div class="welcome-section">
+
+                    <div>
+
+                        <p class="welcome-label">
+                            Good morning 👋
+                        </p>
+
+                        <h1>
+                            Ready to continue
+                            <span>learning?</span>
+                        </h1>
+
+                        <p class="welcome-description">
+                            Stay organized, track your progress,
+                            and make every study session count.
+                        </p>
+
+                    </div>
+
+
+                    <div class="date-card">
+
+                        <span class="date-icon">
+                            📅
+                        </span>
+
+                        <div>
+                            <span>Today</span>
+                            <strong id="currentDate">
+                                Loading...
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     STATISTICS
+                ================================================== -->
+
+                <div class="stats-grid">
+
+                    <!-- Subjects -->
+                    <article class="stat-card">
+
+                        <div class="stat-icon purple">
+                            📚
+                        </div>
+
+                        <div class="stat-content">
+
+                            <span class="stat-label">
+                                Subjects
+                            </span>
+
+                            <strong
+                                class="stat-value"
+                                id="subjectCount"
+                            >
+                                0
+                            </strong>
+
+                            <span class="stat-description">
+                                Active subjects
+                            </span>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Tasks -->
+                    <article class="stat-card">
+
+                        <div class="stat-icon blue">
+                            ✅
+                        </div>
+
+                        <div class="stat-content">
+
+                            <span class="stat-label">
+                                Tasks
+                            </span>
+
+                            <strong
+                                class="stat-value"
+                                id="taskCount"
+                            >
+                                0
+                            </strong>
+
+                            <span class="stat-description">
+                                Tasks remaining
+                            </span>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Study Time -->
+                    <article class="stat-card">
+
+                        <div class="stat-icon green">
+                            ⏱️
+                        </div>
+
+                        <div class="stat-content">
+
+                            <span class="stat-label">
+                                Study Time
+                            </span>
+
+                            <strong
+                                class="stat-value"
+                                id="studyTime"
+                            >
+                                0h
+                            </strong>
+
+                            <span class="stat-description">
+                                This week
+                            </span>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Progress -->
+                    <article class="stat-card">
+
+                        <div class="stat-icon orange">
+                            📈
+                        </div>
+
+                        <div class="stat-content">
+
+                            <span class="stat-label">
+                                Progress
+                            </span>
+
+                            <strong
+                                class="stat-value"
+                                id="overallProgress"
+                            >
+                                0%
+                            </strong>
+
+                            <span class="stat-description">
+                                Overall completion
+                            </span>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+                <!-- =================================================
+                     MAIN DASHBOARD GRID
+                ================================================== -->
+
+                <div class="dashboard-grid">
+
+
+                    <!-- =================================================
+                         STUDY PROGRESS
+                    ================================================== -->
+
+                    <article class="dashboard-card progress-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <span class="card-eyebrow">
+                                    ANALYTICS
+                                </span>
+
+                                <h3>
+                                    Study Progress
+                                </h3>
+
+                            </div>
+
+                            <select
+                                id="progressPeriod"
+                                class="card-select"
+                            >
+                                <option value="week">
+                                    This Week
+                                </option>
+
+                                <option value="month">
+                                    This Month
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="chart-container">
+
+                            <div class="chart-placeholder">
+
+                                <div class="chart-line">
+
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+
+                                </div>
+
+                                <div class="chart-labels">
+
+                                    <span>Mon</span>
+                                    <span>Tue</span>
+                                    <span>Wed</span>
+                                    <span>Thu</span>
+                                    <span>Fri</span>
+                                    <span>Sat</span>
+                                    <span>Sun</span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- =================================================
+                         TODAY'S GOAL
+                    ================================================== -->
+
+                    <article class="dashboard-card goal-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <span class="card-eyebrow">
+                                    TODAY
+                                </span>
+
+                                <h3>
+                                    Study Goal
+                                </h3>
+
+                            </div>
+
+                            <span class="goal-icon">
+                                🎯
+                            </span>
+
+                        </div>
+
+
+                        <div class="goal-content">
+
+                            <div class="goal-progress">
+
+                                <div
+                                    class="circular-progress"
+                                    id="goalProgress"
+                                    style="--progress: 70%;"
+                                >
+
+                                    <div class="progress-inner">
+
+                                        <strong id="goalPercentage">
+                                            70%
+                                        </strong>
+
+                                        <span>
+                                            Complete
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="goal-details">
+
+                                <strong>
+                                    2h 30m
+                                </strong>
+
+                                <span>
+                                    of 3h daily goal
+                                </span>
+
+                                <p>
+                                    Keep going! You're
+                                    almost there.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- =================================================
+                         TODAY'S TASKS
+                    ================================================== -->
+
+                    <article class="dashboard-card tasks-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <span class="card-eyebrow">
+                                    PRODUCTIVITY
+                                </span>
+
+                                <h3>
+                                    Today's Tasks
+                                </h3>
+
+                            </div>
+
+                            <button
+                                class="text-button"
+                                id="viewAllTasks"
+                            >
+                                View All →
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            class="task-list"
+                            id="todayTaskList"
+                        >
+
+                            <!-- Task 1 -->
+                            <div class="task-item">
+
+                                <label class="task-checkbox">
+
+                                    <input
+                                        type="checkbox"
+                                        class="task-check"
+                                    >
+
+                                    <span></span>
+
+                                </label>
+
+                                <div class="task-info">
+
+                                    <strong>
+                                        Complete DBMS assignment
+                                    </strong>
+
+                                    <span>
+                                        📚 Database Management
+                                    </span>
+
+                                </div>
+
+                                <span class="task-priority high">
+                                    High
+                                </span>
+
+                            </div>
+
+
+                            <!-- Task 2 -->
+                            <div class="task-item">
+
+                                <label class="task-checkbox">
+
+                                    <input
+                                        type="checkbox"
+                                        class="task-check"
+                                    >
+
+                                    <span></span>
+
+                                </label>
+
+                                <div class="task-info">
+
+                                    <strong>
+                                        Review Computer Networks
+                                    </strong>
+
+                                    <span>
+                                        🌐 Computer Networks
+                                    </span>
+
+                                </div>
+
+                                <span class="task-priority medium">
+                                    Medium
+                                </span>
+
+                            </div>
+
+
+                            <!-- Task 3 -->
+                            <div class="task-item">
+
+                                <label class="task-checkbox">
+
+                                    <input
+                                        type="checkbox"
+                                        class="task-check"
+                                    >
+
+                                    <span></span>
+
+                                </label>
+
+                                <div class="task-info">
+
+                                    <strong>
+                                        Practice JavaScript
+                                    </strong>
+
+                                    <span>
+                                        💻 Web Development
+                                    </span>
+
+                                </div>
+
+                                <span class="task-priority low">
+                                    Low
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            class="add-task-button"
+                            id="addTaskButton"
+                        >
+                            <span>＋</span>
+                            Add New Task
+                        </button>
+
+                    </article>
+
+
+                    <!-- =================================================
+                         RECENT ACTIVITY
+                    ================================================== -->
+
+                    <article class="dashboard-card activity-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <span class="card-eyebrow">
+                                    ACTIVITY
+                                </span>
+
+                                <h3>
+                                    Recent Activity
+                                </h3>
+
+                            </div>
+
+                            <span class="activity-status">
+                                ● Active
+                            </span>
+
+                        </div>
+
+
+                        <div class="activity-list">
+
+                            <div class="activity-item">
+
+                                <div class="activity-icon purple">
+                                    📖
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Studied Database Management
+                                    </strong>
+
+                                    <span>
+                                        45 minutes ago
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="activity-item">
+
+                                <div class="activity-icon green">
+                                    ✅
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Completed a task
+                                    </strong>
+
+                                    <span>
+                                        2 hours ago
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="activity-item">
+
+                                <div class="activity-icon orange">
+                                    🎯
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Updated study goal
+                                    </strong>
+
+                                    <span>
+                                        Yesterday
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+                <!-- =================================================
+                     QUICK ACTIONS
+                ================================================== -->
+
+                <section class="quick-actions-section">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <span class="card-eyebrow">
+                                SHORTCUTS
+                            </span>
+
+                            <h3>
+                                Quick Actions
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="quick-actions-grid">
+
+                        <button
+                            class="quick-action purple-action"
+                            data-action="timer"
+                        >
+                            <span class="quick-action-icon">
+                                ⏱️
+                            </span>
+
+                            <span>
+                                <strong>
+                                    Start Studying
+                                </strong>
+
+                                <small>
+                                    Begin a focus session
+                                </small>
+                            </span>
+
+                            <span class="action-arrow">
+                                →
+                            </span>
+                        </button>
+
+
+                        <button
+                            class="quick-action blue-action"
+                            data-action="task"
+                        >
+                            <span class="quick-action-icon">
+                                ✅
+                            </span>
+
+                            <span>
+                                <strong>
+                                    Add Task
+                                </strong>
+
+                                <small>
+                                    Create a new task
+                                </small>
+                            </span>
+
+                            <span class="action-arrow">
+                                →
+                            </span>
+                        </button>
+
+
+                        <button
+                            class="quick-action green-action"
+                            data-action="note"
+                        >
+                            <span class="quick-action-icon">
+                                📝
+                            </span>
+
+                            <span>
+                                <strong>
+                                    Write Note
+                                </strong>
+
+                                <small>
+                                    Save a quick note
+                                </small>
+                            </span>
+
+                            <span class="action-arrow">
+                                →
+                            </span>
+                        </button>
+
+
+                        <button
+                            class="quick-action orange-action"
+                            data-action="goal"
+                        >
+                            <span class="quick-action-icon">
+                                🎯
+                            </span>
+
+                            <span>
+                                <strong>
+                                    Set Goal
+                                </strong>
+
+                                <small>
+                                    Plan your progress
+                                </small>
+                            </span>
+
+                            <span class="action-arrow">
+                                →
+                            </span>
+                        </button>
+
+                    </div>
+
+                </section>
+
+            </section>
+
+
+            <!-- =================================================
+                 SUBJECTS SECTION
+            ================================================== -->
+
+            <section
+                class="content-section hidden-section"
+                id="subjects"
+            >
+
+                <div class="section-page-header">
+
+                    <div>
+                        <span class="page-label">
+                            LEARNING
+                        </span>
+
+                        <h1>
+                            My Subjects
+                        </h1>
+
+                        <p>
+                            Manage your subjects and track
+                            your learning progress.
+                        </p>
+                    </div>
+
+                    <button
+                        class="primary-button"
+                        id="addSubjectButton"
+                    >
+                        ＋ Add Subject
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="subjects-grid"
+                    id="subjectsGrid"
+                >
+
+                    <!-- Subjects will be rendered by JavaScript -->
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 TASKS SECTION
+            ================================================== -->
+
+            <section
+                class="content-section hidden-section"
+                id="tasks"
+            >
+
+                <div class="section-page-header">
+
+                    <div>
+                        <span class="page-label">
+                            PRODUCTIVITY
+                        </span>
+
+                        <h1>
+                            My Tasks
+                        </h1>
+
+                        <p>
+                            Organize assignments, study work,
+                            and daily activities.
+                        </p>
+                    </div>
+
+                    <button
+                        class="primary-button"
+                        id="newTaskButton"
+                    >
+                        ＋ New Task
+                    </button>
+
+                </div>
+
+
+                <div class="task-filters">
+
+                    <button
+                        class="filter-button active"
+                        data-filter="all"
+                    >
+                        All
+                    </button>
+
+                    <button
+                        class="filter-button"
+                        data-filter="pending"
+                    >
+                        Pending
+                    </button>
+
+                    <button
+                        class="filter-button"
+                        data-filter="completed"
+                    >
+                        Completed
+                    </button>
+
+                    <button
+                        class="filter-button"
+                        data-filter="high"
+                    >
+                        High Priority
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="full-task-list"
+                    id="fullTaskList"
+                >
+
+                    <!-- Tasks rendered by JavaScript -->
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 TIMER SECTION
+            ================================================== -->
+
+            <section
+                class="content-section hidden-section"
+                id="timer"
+            >
+
+                <div class="section-page-header">
+
+                    <div>
+                        <span class="page-label">
+                            FOCUS
+                        </span>
+
+                        <h1>
+                            Study Timer
+                        </h1>
+
+                        <p>
+                            Focus on your studies with
+                            distraction-free sessions.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="timer-container">
+
+                    <div class="timer-card">
+
+                        <span class="timer-mode">
+                            FOCUS SESSION
+                        </span>
+
+                        <div
+                            class="timer-display"
+                            id="timerDisplay"
+                        >
+                            25:00
+                        </div>
+
+                        <p class="timer-status" id="timerStatus">
+                            Ready to focus?
+                        </p>
+
+
+                        <div class="timer-progress">
+
+                            <div
+                                class="timer-progress-bar"
+                                id="timerProgressBar"
+                            ></div>
+
+                        </div>
+
+
+                        <div class="timer-controls">
+
+                            <button
+                                class="timer-control secondary"
+                                id="resetTimer"
+                            >
+                                ↻ Reset
+                            </button>
+
+                            <button
+                                class="timer-control primary"
+                                id="startTimer"
+                            >
+                                ▶ Start
+                            </button>
+
+                            <button
+                                class="timer-control secondary"
+                                id="skipTimer"
+                            >
+                                Skip →
+                            </button>
+
+                        </div>
+
+
+                        <div class="timer-presets">
+
+                            <button
+                                class="timer-preset active"
+                                data-minutes="25"
+                            >
+                                25 min
+                            </button>
+
+                            <button
+                                class="timer-preset"
+                                data-minutes="50"
+                            >
+                                50 min
+                            </button>
+
+                            <button
+                                class="timer-preset"
+                                data-minutes="90"
+                            >
+                                90 min
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 GOALS SECTION
+            ================================================== -->
+
+            <section
+                class="content-section hidden-section"
+                id="goals"
+            >
+
+                <div class="section-page-header">
+
+                    <div>
+                        <span class="page-label">
+                            PROGRESS
+                        </span>
+
+                        <h1>
+                            Study Goals
+                        </h1>
+
+                        <p>
+                            Set meaningful goals and track
+                            your progress.
+                        </p>
+                    </div>
+
+                    <button
+                        class="primary-button"
+                        id="addGoalButton"
+                    >
+                        ＋ Add Goal
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="goals-grid"
+                    id="goalsGrid"
+                >
+
+                    <!-- Goals rendered by JavaScript -->
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 NOTES SECTION
+            ================================================== -->
+
+            <section
+                class="content-section hidden-section"
+                id="notes"
+            >
+
+                <div class="section-page-header">
+
+                    <div>
+                        <span class="page-label">
+                            KNOWLEDGE
+                        </span>
+
+                        <h1>
+                            My Notes
+                        </h1>
+
+                        <p>
+                            Keep important ideas,
+                            reminders, and study notes.
+                        </p>
+                    </div>
+
+                    <button
+                        class="primary-button"
+                        id="newNoteButton"
+                    >
+                        ＋ New Note
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="notes-grid"
+                    id="notesGrid"
+                >
+
+                    <!-- Notes rendered by JavaScript -->
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 SETTINGS SECTION
+            ================================================== -->
+
+            <section
+                class="content-section hidden-section"
+                id="settings"
+            >
+
+                <div class="section-page-header">
+
+                    <div>
+                        <span class="page-label">
+                            PREFERENCES
+                        </span>
+
+                        <h1>
+                            Settings
+                        </h1>
+
+                        <p>
+                            Customize your StudySathi
+                            experience.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="settings-container">
+
+                    <div class="settings-card">
+
+                        <div class="settings-item">
+
+                            <div>
+
+                                <strong>
+                                    Dark Mode
+                                </strong>
+
+                                <span>
+                                    Switch between light
+                                    and dark appearance.
+                                </span>
+
+                            </div>
+
+                            <button
+                                class="toggle-switch"
+                                id="settingsThemeToggle"
+                                aria-label="Toggle dark mode"
+                            >
+                                <span></span>
+                            </button>
+
+                        </div>
+
+
+                        <div class="settings-item">
+
+                            <div>
+
+                                <strong>
+                                    Notifications
+                                </strong>
+
+                                <span>
+                                    Receive study reminders
+                                    and task notifications.
+                                </span>
+
+                            </div>
+
+                            <button
+                                class="toggle-switch active"
+                                id="notificationToggle"
+                                aria-label="Toggle notifications"
+                            >
+                                <span></span>
+                            </button>
+
+                        </div>
+
+
+                        <div class="settings-item">
+
+                            <div>
+
+                                <strong>
+                                    Reset Application
+                                </strong>
+
+                                <span>
+                                    Clear locally stored
+                                    StudySathi data.
+                                </span>
+
+                            </div>
+
+                            <button
+                                class="danger-button"
+                                id="resetAppButton"
+                            >
+                                Reset Data
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- =====================================================
+         TASK MODAL
+    ====================================================== -->
+
+    <div
+        class="modal-overlay"
+        id="taskModal"
+        aria-hidden="true"
+    >
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <div>
+                    <span class="modal-eyebrow">
+                        PRODUCTIVITY
+                    </span>
+
+                    <h2>
+                        Add New Task
+                    </h2>
+                </div>
+
+                <button
+                    class="modal-close"
+                    data-close-modal="taskModal"
+                    aria-label="Close modal"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="taskForm">
+
+                <div class="form-group">
+
+                    <label for="taskTitle">
+                        Task Title
+                    </label>
+
+                    <input
+                        type="text"
+                        id="taskTitle"
+                        name="taskTitle"
+                        placeholder="e.g. Complete DBMS assignment"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="taskSubject">
+                            Subject
+                        </label>
+
+                        <select
+                            id="taskSubject"
+                            name="taskSubject"
+                        >
+
+                            <option value="">
+                                Select subject
+                            </option>
+
+                            <option>
+                                Database Management
+                            </option>
+
+                            <option>
+                                Computer Networks
+                            </option>
+
+                            <option>
+                                Web Development
+                            </option>
+
+                            <option>
+                                Data Science
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="taskPriority">
+                            Priority
+                        </label>
+
+                        <select
+                            id="taskPriority"
+                            name="taskPriority"
+                        >
+
+                            <option value="low">
+                                Low
+                            </option>
+
+                            <option value="medium" selected>
+                                Medium
+                            </option>
+
+                            <option value="high">
+                                High
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="taskDate">
+                        Due Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="taskDate"
+                        name="taskDate"
+                    >
+
+                </div>
+
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        data-close-modal="taskModal"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Add Task
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         NOTE MODAL
+    ====================================================== -->
+
+    <div
+        class="modal-overlay"
+        id="noteModal"
+        aria-hidden="true"
+    >
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <div>
+                    <span class="modal-eyebrow">
+                        KNOWLEDGE
+                    </span>
+
+                    <h2>
+                        Create New Note
+                    </h2>
+                </div>
+
+                <button
+                    class="modal-close"
+                    data-close-modal="noteModal"
+                    aria-label="Close modal"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="noteForm">
+
+                <div class="form-group">
+
+                    <label for="noteTitle">
+                        Note Title
+                    </label>
+
+                    <input
+                        type="text"
+                        id="noteTitle"
+                        placeholder="e.g. SQL Joins"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="noteContent">
+                        Note Content
+                    </label>
+
+                    <textarea
+                        id="noteContent"
+                        rows="6"
+                        placeholder="Write your study notes..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="noteSubject">
+                        Subject
+                    </label>
+
+                    <select id="noteSubject">
+
+                        <option value="">
+                            General
+                        </option>
+
+                        <option>
+                            Database Management
+                        </option>
+
+                        <option>
+                            Computer Networks
+                        </option>
+
+                        <option>
+                            Web Development
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        data-close-modal="noteModal"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Save Note
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         NOTIFICATION PANEL
+    ====================================================== -->
+
+    <div
+        class="notification-panel"
+        id="notificationPanel"
+    >
+
+        <div class="notification-header">
+
+            <div>
+                <strong>
+                    Notifications
+                </strong>
+
+                <span>
+                    Stay updated
+                </span>
+            </div>
+
+            <button
+                id="closeNotifications"
+                aria-label="Close notifications"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="notification-list">
+
+            <div class="notification-item">
+
+                <span class="notification-icon">
+                    🎯
+                </span>
+
+                <div>
+                    <strong>
+                        Daily goal reminder
+                    </strong>
+
+                    <p>
+                        You're 30 minutes away
+                        from your daily goal.
+                    </p>
+
+                    <small>
+                        Just now
+                    </small>
+                </div>
+
+            </div>
+
+
+            <div class="notification-item">
+
+                <span class="notification-icon">
+                    📚
+                </span>
+
+                <div>
+                    <strong>
+                        Study session
+                    </strong>
+
+                    <p>
+                        Time for your scheduled
+                        study session.
+                    </p>
+
+                    <small>
+                        1 hour ago
+                    </small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         OVERLAY
+    ====================================================== -->
+
+    <div
+        class="page-overlay"
+        id="pageOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="js/storage.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/tasks.js"></script>
+    <script src="js/subjects.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/notes.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+</html>
