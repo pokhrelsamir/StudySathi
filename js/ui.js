@@ -77,6 +77,8 @@ const UI = {
 
         this.loadSavedTheme();
 
+        this.updateNotificationDot();
+
     },
 
 
@@ -292,42 +294,10 @@ const UI = {
 
     setupQuickActions() {
 
-        const actions =
-            document.querySelectorAll(
-                "[data-section]"
-            );
-
-
-        actions.forEach(action => {
-
-            if (
-                action.classList.contains(
-                    "nav-item"
-                )
-            ) {
-                return;
-            }
-
-
-            action.addEventListener(
-                "click",
-                () => {
-
-                    const section =
-                        action.dataset.section;
-
-                    if (section) {
-
-                        this.showSection(
-                            section
-                        );
-
-                    }
-
-                }
-            );
-
-        });
+        /* Quick actions are handled by app.js navigation
+         * and global button handlers, so this method
+         * is no longer needed but kept for compatibility
+         */
 
     },
 
@@ -560,30 +530,37 @@ const UI = {
 
 
     /* =====================================================
-       THEME
+       THEME & SETTINGS
     ====================================================== */
 
     setupTheme() {
 
         const themeToggle =
-            document.getElementById(
-                "themeToggle"
+            document.getElementById("themeToggle");
+
+        const settingsThemeToggle =
+            document.getElementById("settingsThemeToggle");
+
+
+        if (themeToggle) {
+            themeToggle.addEventListener(
+                "click",
+                () => {
+                    this.toggleTheme();
+                }
             );
-
-
-        if (!themeToggle) {
-            return;
         }
 
+        if (settingsThemeToggle) {
+            settingsThemeToggle.addEventListener(
+                "click",
+                () => {
+                    this.toggleTheme();
+                }
+            );
+        }
 
-        themeToggle.addEventListener(
-            "click",
-            () => {
-
-                this.toggleTheme();
-
-            }
-        );
+        this.setupSettings();
 
     },
 
@@ -591,14 +568,12 @@ const UI = {
     toggleTheme() {
 
         const isDark =
-            document.body.classList.toggle(
-                "dark-theme"
-            );
+            document.body.classList.toggle("dark-theme");
+
+        document.body.classList.toggle("dark-mode", isDark);
 
 
-        this.updateThemeIcon(
-            isDark
-        );
+        this.updateThemeIcon(isDark);
 
 
         StorageManager.save(
@@ -606,34 +581,55 @@ const UI = {
             isDark ? "dark" : "light"
         );
 
+
+        const settings = StorageManager.get("settings", {
+            darkMode: false,
+            notifications: true,
+            sound: true
+        });
+
+        settings.darkMode = isDark;
+
+        StorageManager.save("settings", settings);
+
+
+        if (typeof this.showToast === "function") {
+            this.showToast(
+                isDark ? "Dark theme enabled 🌙" : "Light theme enabled ☀️",
+                "info",
+                "Appearance"
+            );
+        }
+
     },
 
 
     loadSavedTheme() {
 
         const savedTheme =
-            StorageManager.get(
-                "theme",
-                "light"
-            );
+            StorageManager.get("theme", null);
+
+        const settings =
+            StorageManager.get("settings", null);
 
 
-        const isDark =
-            savedTheme === "dark";
+        let isDark = false;
 
-
-        if (isDark) {
-
-            document.body.classList.add(
-                "dark-theme"
-            );
-
+        if (savedTheme) {
+            isDark = (savedTheme === "dark");
+        } else if (settings && settings.darkMode) {
+            isDark = true;
         }
 
 
-        this.updateThemeIcon(
-            isDark
-        );
+        if (isDark) {
+            document.body.classList.add("dark-theme", "dark-mode");
+        } else {
+            document.body.classList.remove("dark-theme", "dark-mode");
+        }
+
+
+        this.updateThemeIcon(isDark);
 
     },
 
@@ -641,18 +637,124 @@ const UI = {
     updateThemeIcon(isDark) {
 
         const themeToggle =
-            document.getElementById(
-                "themeToggle"
+            document.getElementById("themeToggle");
+
+        if (themeToggle) {
+            themeToggle.textContent = isDark ? "☀️" : "🌙";
+            themeToggle.setAttribute(
+                "aria-label",
+                isDark ? "Switch to light mode" : "Switch to dark mode"
             );
-
-
-        if (!themeToggle) {
-            return;
         }
 
 
-        themeToggle.textContent =
-            isDark ? "☀️" : "🌙";
+        const settingsThemeToggle =
+            document.getElementById("settingsThemeToggle");
+
+        if (settingsThemeToggle) {
+            if (isDark) {
+                settingsThemeToggle.classList.add("active");
+                settingsThemeToggle.setAttribute("aria-checked", "true");
+            } else {
+                settingsThemeToggle.classList.remove("active");
+                settingsThemeToggle.setAttribute("aria-checked", "false");
+            }
+        }
+
+    },
+
+
+    setupSettings() {
+
+        const notificationToggle =
+            document.getElementById("notificationToggle");
+
+        const resetAppButton =
+            document.getElementById("resetAppButton");
+
+
+        const settings = StorageManager.get("settings", {
+            darkMode: false,
+            notifications: true,
+            sound: true
+        });
+
+
+        if (notificationToggle) {
+
+            if (settings.notifications !== false) {
+                notificationToggle.classList.add("active");
+                notificationToggle.setAttribute("aria-checked", "true");
+            } else {
+                notificationToggle.classList.remove("active");
+                notificationToggle.setAttribute("aria-checked", "false");
+            }
+
+
+            notificationToggle.addEventListener("click", () => {
+
+                const currentSettings = StorageManager.get("settings", {
+                    darkMode: false,
+                    notifications: true,
+                    sound: true
+                });
+
+
+                currentSettings.notifications = !currentSettings.notifications;
+
+                StorageManager.save("settings", currentSettings);
+
+
+                if (currentSettings.notifications) {
+                    notificationToggle.classList.add("active");
+                    notificationToggle.setAttribute("aria-checked", "true");
+
+                    if (typeof this.showToast === "function") {
+                        this.showToast("Notifications enabled 🔔", "success", "Settings");
+                    }
+
+                } else {
+                    notificationToggle.classList.remove("active");
+                    notificationToggle.setAttribute("aria-checked", "false");
+
+                    if (typeof this.showToast === "function") {
+                        this.showToast("Notifications disabled 🔕", "info", "Settings");
+                    }
+
+                }
+
+            });
+
+        }
+
+
+        if (resetAppButton) {
+
+            resetAppButton.addEventListener("click", () => {
+
+                const confirmed = confirm(
+                    "Are you sure you want to reset all StudySathi data? All tasks, notes, and study records will be permanently cleared."
+                );
+
+
+                if (confirmed) {
+
+                    StorageManager.clear();
+
+                    if (typeof this.showToast === "function") {
+                        this.showToast("All data reset successfully! Reloading...", "warning", "Reset");
+                    }
+
+
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+
+                }
+
+            });
+
+        }
 
     },
 

@@ -233,7 +233,7 @@
                         aria-label="Notifications"
                     >
                         🔔
-                        <span class="notification-dot"></span>
+                        <span class="notification-dot" id="notificationDot"></span>
                     </button>
 
 
@@ -867,7 +867,7 @@
 
                         <button
                             class="quick-action purple-action"
-                            data-action="timer"
+                            data-section="timer"
                         >
                             <span class="quick-action-icon">
                                 ⏱️
@@ -891,7 +891,7 @@
 
                         <button
                             class="quick-action blue-action"
-                            data-action="task"
+                            data-action="add-task"
                         >
                             <span class="quick-action-icon">
                                 ✅
@@ -915,7 +915,7 @@
 
                         <button
                             class="quick-action green-action"
-                            data-action="note"
+                            data-action="add-note"
                         >
                             <span class="quick-action-icon">
                                 📝
@@ -939,7 +939,7 @@
 
                         <button
                             class="quick-action orange-action"
-                            data-action="goal"
+                            data-section="goals"
                         >
                             <span class="quick-action-icon">
                                 🎯
@@ -997,6 +997,7 @@
                     <button
                         class="primary-button"
                         id="addSubjectButton"
+                        data-action="add-subject"
                     >
                         ＋ Add Subject
                     </button>
@@ -1046,6 +1047,7 @@
                     <button
                         class="primary-button"
                         id="newTaskButton"
+                        data-action="add-task"
                     >
                         ＋ New Task
                     </button>
@@ -1088,7 +1090,7 @@
 
                 <div
                     class="full-task-list"
-                    id="fullTaskList"
+                    id="tasksList"
                 >
 
                     <!-- Tasks rendered by JavaScript -->
@@ -1295,6 +1297,7 @@
                     <button
                         class="primary-button"
                         id="newNoteButton"
+                        data-action="add-note"
                     >
                         ＋ New Note
                     </button>
@@ -1366,6 +1369,8 @@
                             <button
                                 class="toggle-switch"
                                 id="settingsThemeToggle"
+                                role="switch"
+                                aria-checked="false"
                                 aria-label="Toggle dark mode"
                             >
                                 <span></span>
@@ -1392,6 +1397,8 @@
                             <button
                                 class="toggle-switch active"
                                 id="notificationToggle"
+                                role="switch"
+                                aria-checked="true"
                                 aria-label="Toggle notifications"
                             >
                                 <span></span>
@@ -1559,14 +1566,14 @@
 
                 <div class="form-group">
 
-                    <label for="taskDate">
+                    <label for="taskDueDate">
                         Due Date
                     </label>
 
                     <input
                         type="date"
-                        id="taskDate"
-                        name="taskDate"
+                        id="taskDueDate"
+                        name="taskDueDate"
                     >
 
                 </div>
@@ -1587,6 +1594,102 @@
                         class="primary-button"
                     >
                         Add Task
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUBJECT MODAL
+    ====================================================== -->
+
+    <div
+        class="modal-overlay"
+        id="subjectModal"
+        aria-hidden="true"
+    >
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <div>
+                    <span class="modal-eyebrow">
+                        LEARNING
+                    </span>
+
+                    <h2>
+                        Add New Subject
+                    </h2>
+                </div>
+
+                <button
+                    class="modal-close"
+                    data-close-modal="subjectModal"
+                    aria-label="Close modal"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="subjectForm">
+
+                <div class="form-group">
+
+                    <label for="subjectName">
+                        Subject Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="subjectName"
+                        name="subjectName"
+                        placeholder="e.g. Database Management"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="subjectColor">
+                        Subject Color
+                    </label>
+
+                    <input
+                        type="color"
+                        id="subjectColor"
+                        name="subjectColor"
+                        value="#6366f1"
+                    >
+
+                </div>
+
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        data-close-modal="subjectModal"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Add Subject
                     </button>
 
                 </div>
@@ -1744,63 +1847,18 @@
             </div>
 
             <button
-                id="closeNotifications"
-                aria-label="Close notifications"
+                id="clearNotifications"
+                aria-label="Clear notifications"
             >
-                ×
+                Clear All
             </button>
 
         </div>
 
 
-        <div class="notification-list">
+        <div class="notification-list" id="notificationList">
 
-            <div class="notification-item">
-
-                <span class="notification-icon">
-                    🎯
-                </span>
-
-                <div>
-                    <strong>
-                        Daily goal reminder
-                    </strong>
-
-                    <p>
-                        You're 30 minutes away
-                        from your daily goal.
-                    </p>
-
-                    <small>
-                        Just now
-                    </small>
-                </div>
-
-            </div>
-
-
-            <div class="notification-item">
-
-                <span class="notification-icon">
-                    📚
-                </span>
-
-                <div>
-                    <strong>
-                        Study session
-                    </strong>
-
-                    <p>
-                        Time for your scheduled
-                        study session.
-                    </p>
-
-                    <small>
-                        1 hour ago
-                    </small>
-                </div>
-
-            </div>
+            <!-- Notifications will be rendered by JavaScript -->
 
         </div>
 
@@ -1815,6 +1873,31 @@
         class="page-overlay"
         id="pageOverlay"
     ></div>
+
+
+    <!-- =====================================================
+         TOAST NOTIFICATION
+    ====================================================== -->
+
+    <div class="toast" id="toast">
+
+        <div class="toast-icon" id="toastIcon">
+            ✓
+        </div>
+
+        <div class="toast-content">
+
+            <strong id="toastTitle">
+                Success
+            </strong>
+
+            <span id="toastMessage">
+                Action completed
+            </span>
+
+        </div>
+
+    </div>
 
 
     <!-- =====================================================

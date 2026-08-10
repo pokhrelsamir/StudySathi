@@ -71,7 +71,8 @@
    2. DARK MODE VARIABLES
 ========================================================= */
 
-body.dark-mode {
+body.dark-mode,
+body.dark-theme {
 
     --bg-primary: #0f172a;
     --bg-secondary: #111827;

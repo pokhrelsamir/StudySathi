@@ -815,15 +815,15 @@ const SubjectManager = {
 
     updateDashboard() {
 
-        const totalSubjects =
+        const subjectCountElement =
             document.getElementById(
-                "totalSubjects"
+                "subjectCount"
             );
 
 
-        if (totalSubjects) {
+        if (subjectCountElement) {
 
-            totalSubjects.textContent =
+            subjectCountElement.textContent =
                 this.subjects.length;
 
         }

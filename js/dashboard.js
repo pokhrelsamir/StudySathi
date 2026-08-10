@@ -1,18 +1,9 @@
 /* =========================================================
-   StudySathi — Task Manager
-   Handles task creation, rendering, filtering and completion
+   StudySathi — Dashboard Manager
+   Aggregates statistics and manages dashboard display
 ========================================================= */
 
-const TaskManager = {
-
-    /* -----------------------------------------------------
-       State
-    ----------------------------------------------------- */
-
-    tasks: [],
-
-    currentFilter: "all",
-
+const DashboardManager = {
 
     /* =====================================================
        INITIALIZATION
@@ -20,295 +11,206 @@ const TaskManager = {
 
     init() {
 
-        this.loadTasks();
+        this.refresh();
 
-        this.setupForm();
-
-        this.setupFilters();
-
-        this.setupTaskEvents();
-
-        this.render();
+        this.setupQuickLinks();
 
     },
 
 
     /* =====================================================
-       LOAD TASKS
+       REFRESH DASHBOARD
     ===================================================== */
 
-    loadTasks() {
+    refresh() {
 
-        this.tasks = StorageManager.get(
-            "tasks",
-            []
-        );
+        this.updateStatistics();
+
+        this.updateTodayTasks();
+
+        this.updateRecentActivity();
 
     },
 
 
     /* =====================================================
-       SAVE TASKS
+       UPDATE STATISTICS
     ===================================================== */
 
-    saveTasks() {
+    updateStatistics() {
 
-        StorageManager.save(
-            "tasks",
-            this.tasks
-        );
+        /* Subject count */
+        const subjects =
+            StorageManager.get(
+                "subjects",
+                []
+            );
 
-    },
 
-
-    /* =====================================================
-       FORM
-    ===================================================== */
-
-    setupForm() {
-
-        const form =
+        const subjectCountElement =
             document.getElementById(
-                "taskForm"
+                "subjectCount"
             );
 
 
-        if (!form) {
-            return;
-        }
+        if (subjectCountElement) {
 
-
-        form.addEventListener(
-            "submit",
-            event => {
-
-                event.preventDefault();
-
-                this.addTask();
-
-            }
-        );
-
-    },
-
-
-    /* =====================================================
-       ADD TASK
-    ===================================================== */
-
-    addTask() {
-
-        const title =
-            document
-                .getElementById("taskTitle")
-                ?.value
-                .trim();
-
-
-        const subject =
-            document
-                .getElementById("taskSubject")
-                ?.value
-                .trim();
-
-
-        const priority =
-            document
-                .getElementById("taskPriority")
-                ?.value ||
-            "medium";
-
-
-        const dueDate =
-            document
-                .getElementById("taskDueDate")
-                ?.value ||
-            "";
-
-
-        if (!title) {
-
-            UI.showToast(
-                "Please enter a task title.",
-                "warning"
-            );
-
-            return;
+            subjectCountElement.textContent =
+                subjects.length;
 
         }
 
 
-        const task = {
-
-            id: generateId("task"),
-
-            title,
-
-            subject,
-
-            priority,
-
-            dueDate,
-
-            completed: false,
-
-            createdAt:
-                new Date().toISOString(),
-
-            completedAt: null
-
-        };
+        /* Task count */
+        const tasks =
+            StorageManager.get(
+                "tasks",
+                []
+            );
 
 
-        this.tasks.unshift(
-            task
-        );
+        const pendingTasks =
+            tasks.filter(
+                task =>
+                    !task.completed
+            );
 
 
-        this.saveTasks();
-
-        this.render();
-
-        this.resetForm();
-
-        UI.closeModal(
-            "taskModal"
-        );
-
-
-        UI.showToast(
-            "Task added successfully.",
-            "success"
-        );
-
-
-        UI.addNotification(
-            "New Task",
-            `"${title}" was added to your tasks.`,
-            "✅"
-        );
-
-
-        this.updateDashboard();
-
-    },
-
-
-    /* =====================================================
-       RESET FORM
-    ===================================================== */
-
-    resetForm() {
-
-        const form =
+        const taskCountElement =
             document.getElementById(
-                "taskForm"
+                "taskCount"
             );
 
 
-        if (form) {
+        if (taskCountElement) {
 
-            form.reset();
+            taskCountElement.textContent =
+                pendingTasks.length;
 
         }
 
 
-        const priority =
+        /* Overall progress */
+        const totalTasks =
+            tasks.length;
+
+
+        const completedTasks =
+            tasks.filter(
+                task =>
+                    task.completed
+            ).length;
+
+
+        const completionRate =
+            totalTasks > 0
+                ? Math.round(
+                    (completedTasks / totalTasks) * 100
+                )
+                : 0;
+
+
+        const overallProgressElement =
             document.getElementById(
-                "taskPriority"
+                "overallProgress"
             );
 
 
-        if (priority) {
+        if (overallProgressElement) {
 
-            priority.value =
-                "medium";
+            overallProgressElement.textContent =
+                `${completionRate}%`;
 
         }
 
-    },
 
-
-    /* =====================================================
-       FILTERS
-    ===================================================== */
-
-    setupFilters() {
-
-        const buttons =
-            document.querySelectorAll(
-                ".filter-button"
+        /* Study time */
+        const studySessions =
+            StorageManager.get(
+                "studySessions",
+                []
             );
 
 
-        buttons.forEach(button => {
+        const thisWeekStart =
+            new Date();
 
-            button.addEventListener(
-                "click",
-                () => {
 
-                    buttons.forEach(
-                        item => {
+        thisWeekStart.setDate(
+            thisWeekStart.getDate() -
+            thisWeekStart.getDay()
+        );
 
-                            item.classList.remove(
-                                "active"
-                            );
 
-                        }
+        thisWeekStart.setHours(
+            0,
+            0,
+            0,
+            0
+        );
+
+
+        const thisWeekSessions =
+            studySessions.filter(
+                session => {
+
+                    const sessionDate =
+                        new Date(
+                            session.createdAt
+                        );
+
+
+                    return (
+                        sessionDate >= thisWeekStart
                     );
-
-
-                    button.classList.add(
-                        "active"
-                    );
-
-
-                    this.currentFilter =
-                        button.dataset.filter ||
-                        "all";
-
-
-                    this.render();
 
                 }
             );
 
-        });
 
-    },
-
-
-    /* =====================================================
-       FILTER TASKS
-    ===================================================== */
-
-    getFilteredTasks() {
-
-        switch (
-            this.currentFilter
-        ) {
-
-            case "pending":
-
-                return this.tasks.filter(
-                    task =>
-                        !task.completed
-                );
+        const totalMinutes =
+            thisWeekSessions.reduce(
+                (sum, session) =>
+                    sum + (session.duration || 0),
+                0
+            );
 
 
-            case "completed":
-
-                return this.tasks.filter(
-                    task =>
-                        task.completed
-                );
+        const hours =
+            Math.floor(
+                totalMinutes / 60
+            );
 
 
-            default:
+        const minutes =
+            totalMinutes % 60;
 
-                return [
-                    ...this.tasks
-                ];
+
+        const studyTimeElement =
+            document.getElementById(
+                "studyTime"
+            );
+
+
+        if (studyTimeElement) {
+
+            if (hours > 0) {
+
+                studyTimeElement.textContent =
+                    minutes > 0
+                        ? `${hours}h ${minutes}m`
+                        : `${hours}h`;
+
+            }
+
+            else {
+
+                studyTimeElement.textContent =
+                    minutes > 0
+                        ? `${minutes}m`
+                        : "0h";
+
+            }
 
         }
 
@@ -316,14 +218,14 @@ const TaskManager = {
 
 
     /* =====================================================
-       RENDER
+       UPDATE TODAY'S TASKS
     ===================================================== */
 
-    render() {
+    updateTodayTasks() {
 
         const container =
             document.getElementById(
-                "tasksList"
+                "todayTaskList"
             );
 
 
@@ -333,12 +235,45 @@ const TaskManager = {
 
 
         const tasks =
-            this.getFilteredTasks();
+            StorageManager.get(
+                "tasks",
+                []
+            );
 
 
-        if (tasks.length === 0) {
+        const today =
+            getTodayDate();
 
-            container.innerHTML = this.emptyState();
+
+        const todayTasks =
+            tasks
+                .filter(
+                    task =>
+                        task.dueDate === today &&
+                        !task.completed
+                )
+                .slice(0, 3);
+
+
+        if (
+            todayTasks.length === 0
+        ) {
+
+            container.innerHTML = `
+
+                <div class="empty-state-small">
+
+                    <span>
+                        ✅
+                    </span>
+
+                    <p>
+                        No tasks due today
+                    </p>
+
+                </div>
+
+            `;
 
             return;
 
@@ -346,26 +281,25 @@ const TaskManager = {
 
 
         container.innerHTML =
-            tasks
+            todayTasks
                 .map(
                     task =>
-                        this.createTaskHTML(
+                        this.createTaskItemHTML(
                             task
                         )
                 )
                 .join("");
 
-
-        this.updateTaskCount();
-
     },
 
 
     /* =====================================================
-       TASK HTML
+       CREATE TASK ITEM HTML
     ===================================================== */
 
-    createTaskHTML(task) {
+    createTaskItemHTML(
+        task
+    ) {
 
         const priorityClass =
             this.getPriorityClass(
@@ -374,176 +308,56 @@ const TaskManager = {
 
 
         const priorityLabel =
-            this.getPriorityLabel(
-                task.priority
-            );
-
-
-        const dueDate =
-            this.formatDueDate(
-                task.dueDate
-            );
-
-
-        const completedClass =
-            task.completed
-                ? "completed"
-                : "";
-
-
-        const checked =
-            task.completed
-                ? "checked"
-                : "";
+            task.priority ||
+            "medium";
 
 
         return `
 
-            <article
-                class="task-card ${completedClass}"
-                data-task-id="${task.id}"
-            >
+            <div class="task-item">
 
-                <div class="task-checkbox-wrapper">
+                <label class="task-checkbox">
 
                     <input
                         type="checkbox"
-                        class="task-checkbox"
-                        data-action="toggle"
-                        data-id="${task.id}"
-                        ${checked}
-                        aria-label="Mark task as completed"
+                        class="task-check"
+                        data-task-id="${task.id}"
                     >
 
-                </div>
+                    <span></span>
+
+                </label>
 
 
-                <div class="task-content">
+                <div class="task-info">
 
-                    <h3 class="task-title">
-
+                    <strong>
                         ${UI.escapeHTML(
                             task.title
                         )}
+                    </strong>
 
-                    </h3>
-
-
-                    <div class="task-meta">
-
-                        ${
-                            task.subject
-                                ? `
-                                    <span class="task-subject">
-                                        📚
-                                        ${UI.escapeHTML(
-                                            task.subject
-                                        )}
-                                    </span>
-                                  `
-                                : ""
-                        }
-
-
-                        ${
-                            dueDate
-                                ? `
-                                    <span class="task-due">
-                                        📅
-                                        ${dueDate}
-                                    </span>
-                                  `
-                                : ""
-                        }
-
-                    </div>
+                    ${
+                        task.subject
+                            ? `
+                                <span>
+                                    📚
+                                    ${UI.escapeHTML(
+                                        task.subject
+                                    )}
+                                </span>
+                              `
+                            : ""
+                    }
 
                 </div>
 
 
-                <div class="task-right">
-
-                    <span
-                        class="priority-badge ${priorityClass}"
-                    >
-
-                        ${priorityLabel}
-
-                    </span>
-
-
-                    <button
-                        class="task-delete"
-                        data-action="delete"
-                        data-id="${task.id}"
-                        aria-label="Delete task"
-                        title="Delete task"
-                    >
-
-                        🗑️
-
-                    </button>
-
-                </div>
-
-            </article>
-
-        `;
-
-    },
-
-
-    /* =====================================================
-       EMPTY STATE
-    ===================================================== */
-
-    emptyState() {
-
-        const messages = {
-
-            all: {
-                icon: "✅",
-                title: "No tasks yet",
-                text: "Create your first study task."
-            },
-
-            pending: {
-                icon: "🎉",
-                title: "You're all caught up!",
-                text: "There are no pending tasks."
-            },
-
-            completed: {
-                icon: "📋",
-                title: "No completed tasks",
-                text: "Completed tasks will appear here."
-            }
-
-        };
-
-
-        const state =
-            messages[
-                this.currentFilter
-            ] ||
-            messages.all;
-
-
-        return `
-
-            <div class="empty-state">
-
-                <span>
-                    ${state.icon}
+                <span class="task-priority ${priorityClass}">
+                    ${this.capitalize(
+                        priorityLabel
+                    )}
                 </span>
-
-                <h3>
-                    ${state.title}
-                </h3>
-
-                <p>
-                    ${state.text}
-                </p>
 
             </div>
 
@@ -553,203 +367,7 @@ const TaskManager = {
 
 
     /* =====================================================
-       TASK EVENTS
-    ===================================================== */
-
-    setupTaskEvents() {
-
-        const container =
-            document.getElementById(
-                "tasksList"
-            );
-
-
-        if (!container) {
-            return;
-        }
-
-
-        container.addEventListener(
-            "click",
-            event => {
-
-                const button =
-                    event.target.closest(
-                        "[data-action]"
-                    );
-
-
-                if (!button) {
-                    return;
-                }
-
-
-                const action =
-                    button.dataset.action;
-
-
-                const id =
-                    button.dataset.id;
-
-
-                if (!id) {
-                    return;
-                }
-
-
-                if (
-                    action === "delete"
-                ) {
-
-                    this.deleteTask(id);
-
-                }
-
-            }
-        );
-
-
-        container.addEventListener(
-            "change",
-            event => {
-
-                const checkbox =
-                    event.target.closest(
-                        '[data-action="toggle"]'
-                    );
-
-
-                if (!checkbox) {
-                    return;
-                }
-
-
-                this.toggleTask(
-                    checkbox.dataset.id
-                );
-
-            }
-        );
-
-    },
-
-
-    /* =====================================================
-       TOGGLE TASK
-    ===================================================== */
-
-    toggleTask(id) {
-
-        const task =
-            this.tasks.find(
-                item =>
-                    item.id === id
-            );
-
-
-        if (!task) {
-            return;
-        }
-
-
-        task.completed =
-            !task.completed;
-
-
-        task.completedAt =
-            task.completed
-                ? new Date().toISOString()
-                : null;
-
-
-        this.saveTasks();
-
-        this.render();
-
-
-        if (task.completed) {
-
-            UI.showToast(
-                "Great job! Task completed.",
-                "success"
-            );
-
-
-            UI.addNotification(
-                "Task Completed",
-                `"${task.title}" has been completed.`,
-                "🎉"
-            );
-
-        } else {
-
-            UI.showToast(
-                "Task marked as pending.",
-                "info"
-            );
-
-        }
-
-
-        this.updateDashboard();
-
-    },
-
-
-    /* =====================================================
-       DELETE TASK
-    ===================================================== */
-
-    deleteTask(id) {
-
-        const task =
-            this.tasks.find(
-                item =>
-                    item.id === id
-            );
-
-
-        if (!task) {
-            return;
-        }
-
-
-        const confirmed =
-            window.confirm(
-                `Delete "${task.title}"?`
-            );
-
-
-        if (!confirmed) {
-            return;
-        }
-
-
-        this.tasks =
-            this.tasks.filter(
-                item =>
-                    item.id !== id
-            );
-
-
-        this.saveTasks();
-
-        this.render();
-
-
-        UI.showToast(
-            "Task deleted.",
-            "success"
-        );
-
-
-        this.updateDashboard();
-
-    },
-
-
-    /* =====================================================
-       PRIORITY
+       PRIORITY CLASS
     ===================================================== */
 
     getPriorityClass(
@@ -758,301 +376,171 @@ const TaskManager = {
 
         const classes = {
 
-            low: "priority-low",
+            low: "low",
 
-            medium: "priority-medium",
+            medium: "medium",
 
-            high: "priority-high"
+            high: "high"
 
         };
 
 
         return (
             classes[priority] ||
-            "priority-medium"
+            "medium"
         );
 
     },
 
 
-    getPriorityLabel(
-        priority
+    /* =====================================================
+       CAPITALIZE
+    ===================================================== */
+
+    capitalize(
+        text
     ) {
 
-        const labels = {
+        if (
+            !text ||
+            typeof text !== "string"
+        ) {
 
-            low: "Low",
+            return "";
 
-            medium: "Medium",
-
-            high: "High"
-
-        };
+        }
 
 
         return (
-            labels[priority] ||
-            "Medium"
+            text.charAt(0).toUpperCase() +
+            text.slice(1).toLowerCase()
         );
 
     },
 
 
     /* =====================================================
-       DATE
+       UPDATE RECENT ACTIVITY
     ===================================================== */
 
-    formatDueDate(
-        date
-    ) {
+    updateRecentActivity() {
 
-        if (!date) {
-            return "";
-        }
-
-
-        const due =
-            new Date(
-                `${date}T00:00:00`
-            );
-
-
-        if (
-            Number.isNaN(
-                due.getTime()
-            )
-        ) {
-
-            return "";
-
-        }
-
-
-        const today =
-            new Date();
-
-
-        today.setHours(
-            0,
-            0,
-            0,
-            0
-        );
-
-
-        const tomorrow =
-            new Date(
-                today
-            );
-
-
-        tomorrow.setDate(
-            tomorrow.getDate() + 1
-        );
-
-
-        if (
-            due.getTime() ===
-            today.getTime()
-        ) {
-
-            return "Today";
-
-        }
-
-
-        if (
-            due.getTime() ===
-            tomorrow.getTime()
-        ) {
-
-            return "Tomorrow";
-
-        }
-
-
-        if (
-            due < today
-        ) {
-
-            return `Overdue · ${
-                due.toLocaleDateString(
-                    undefined,
-                    {
-                        month: "short",
-                        day: "numeric"
-                    }
-                )
-            }`;
-
-        }
-
-
-        return due.toLocaleDateString(
-            undefined,
-            {
-                month: "short",
-                day: "numeric",
-                year: "numeric"
-            }
-        );
-
-    },
-
-
-    /* =====================================================
-       STATISTICS
-    ===================================================== */
-
-    getStats() {
-
-        const total =
-            this.tasks.length;
-
-
-        const completed =
-            this.tasks.filter(
-                task =>
-                    task.completed
-            ).length;
-
-
-        const pending =
-            total - completed;
-
-
-        const completionRate =
-            total > 0
-                ? Math.round(
-                    (completed / total) * 100
-                )
-                : 0;
-
-
-        return {
-
-            total,
-
-            completed,
-
-            pending,
-
-            completionRate
-
-        };
-
-    },
-
-
-    /* =====================================================
-       DASHBOARD UPDATE
-    ===================================================== */
-
-    updateDashboard() {
-
-        const stats =
-            this.getStats();
-
-
-        const completedElement =
-            document.getElementById(
-                "completedTasks"
-            );
-
-
-        if (completedElement) {
-
-            completedElement.textContent =
-                stats.completed;
-
-        }
-
-
-        const progressPercentage =
-            document.getElementById(
-                "progressPercentage"
-            );
-
-
-        if (progressPercentage) {
-
-            progressPercentage.textContent =
-                `${stats.completionRate}%`;
-
-        }
-
-
-        const progressTasks =
-            document.getElementById(
-                "progressTasks"
-            );
-
-
-        if (progressTasks) {
-
-            progressTasks.textContent =
-                `${stats.completed} / ${stats.total}`;
-
-        }
-
-
-        const progressGoal =
-            document.getElementById(
-                "progressGoal"
-            );
-
-
-        if (progressGoal) {
-
-            progressGoal.textContent =
-                `${stats.completionRate}%`;
-
-        }
-
-
-        /* Circular progress */
-
-        const progressCircle =
+        const container =
             document.querySelector(
-                ".circular-progress"
+                ".activity-list"
             );
 
 
-        if (progressCircle) {
-
-            progressCircle.style.setProperty(
-                "--progress",
-                `${stats.completionRate}%`
-            );
-
-        }
-
-    },
-
-
-    /* =====================================================
-       TASK COUNT
-    ===================================================== */
-
-    updateTaskCount() {
-
-        const stats =
-            this.getStats();
-
-
-        const heading =
-            document.querySelector(
-                "#tasksSection .section-heading h1"
-            );
-
-
-        if (!heading) {
+        if (!container) {
             return;
         }
 
 
-        heading.textContent =
-            `My Tasks (${stats.pending})`;
+        const activities =
+            StorageManager.get(
+                "recentActivity",
+                []
+            );
+
+
+        if (
+            activities.length === 0
+        ) {
+
+            container.innerHTML = `
+
+                <div class="empty-state-small">
+
+                    <span>
+                        📋
+                    </span>
+
+                    <p>
+                        No recent activity
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        const recentActivities =
+            activities.slice(0, 3);
+
+
+        container.innerHTML =
+            recentActivities
+                .map(
+                    activity => `
+
+                    <div class="activity-item">
+
+                        <div class="activity-icon purple">
+                            ${activity.icon}
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                ${UI.escapeHTML(
+                                    activity.title
+                                )}
+                            </strong>
+
+                            <span>
+                                ${formatActivityTime(
+                                    activity.timestamp
+                                )}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                `
+                )
+                .join("");
+
+    },
+
+
+    /* =====================================================
+       SETUP QUICK LINKS
+    ===================================================== */
+
+    setupQuickLinks() {
+
+        const viewAllButton =
+            document.getElementById(
+                "viewAllTasks"
+            );
+
+
+        if (viewAllButton) {
+
+            viewAllButton.addEventListener(
+                "click",
+                () => {
+
+                    if (
+                        typeof StudySathiApp !==
+                        "undefined"
+                    ) {
+
+                        StudySathiApp.showSection(
+                            "tasks"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
 
     }
 
@@ -1060,14 +548,14 @@ const TaskManager = {
 
 
 /* =========================================================
-   Initialize Task Manager
+   Initialize Dashboard Manager
 ========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
     () => {
 
-        TaskManager.init();
+        DashboardManager.init();
 
     }
 );

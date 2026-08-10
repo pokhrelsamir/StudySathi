@@ -954,64 +954,37 @@ const TaskManager = {
             this.getStats();
 
 
-        const completedElement =
+        /* Update task count in dashboard */
+        const taskCountElement =
             document.getElementById(
-                "completedTasks"
+                "taskCount"
             );
 
 
-        if (completedElement) {
+        if (taskCountElement) {
 
-            completedElement.textContent =
-                stats.completed;
+            taskCountElement.textContent =
+                stats.pending;
 
         }
 
 
-        const progressPercentage =
+        /* Update overall progress */
+        const overallProgressElement =
             document.getElementById(
-                "progressPercentage"
+                "overallProgress"
             );
 
 
-        if (progressPercentage) {
+        if (overallProgressElement) {
 
-            progressPercentage.textContent =
-                `${stats.completionRate}%`;
-
-        }
-
-
-        const progressTasks =
-            document.getElementById(
-                "progressTasks"
-            );
-
-
-        if (progressTasks) {
-
-            progressTasks.textContent =
-                `${stats.completed} / ${stats.total}`;
-
-        }
-
-
-        const progressGoal =
-            document.getElementById(
-                "progressGoal"
-            );
-
-
-        if (progressGoal) {
-
-            progressGoal.textContent =
+            overallProgressElement.textContent =
                 `${stats.completionRate}%`;
 
         }
 
 
         /* Circular progress */
-
         const progressCircle =
             document.querySelector(
                 ".circular-progress"
@@ -1024,6 +997,21 @@ const TaskManager = {
                 "--progress",
                 `${stats.completionRate}%`
             );
+
+        }
+
+
+        /* Update goal percentage */
+        const goalPercentage =
+            document.getElementById(
+                "goalPercentage"
+            );
+
+
+        if (goalPercentage) {
+
+            goalPercentage.textContent =
+                `${stats.completionRate}%`;
 
         }
 
@@ -1042,17 +1030,16 @@ const TaskManager = {
 
         const heading =
             document.querySelector(
-                "#tasksSection .section-heading h1"
+                "#tasks .section-page-header h1"
             );
 
 
-        if (!heading) {
-            return;
+        if (heading) {
+
+            heading.textContent =
+                `My Tasks`;
+
         }
-
-
-        heading.textContent =
-            `My Tasks (${stats.pending})`;
 
     }
 
