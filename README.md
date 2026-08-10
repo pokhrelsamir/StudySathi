@@ -34,36 +34,6 @@
 
 ---
 
-## 📖 Table of Contents
-
-* [About StudySathi](#-about-studysathi)
-* [Project Objectives](#-project-objectives)
-* [Key Features](#-key-features)
-* [Screenshots](#-screenshots)
-* [Technologies Used](#-technologies-used)
-* [Application Architecture](#-application-architecture)
-* [Application Workflow](#-application-workflow)
-* [Application Modules](#-application-modules)
-* [Project Structure](#-project-structure)
-* [JavaScript Data Flow](#-javascript-data-flow)
-* [Keyboard Shortcuts](#-keyboard-shortcuts)
-* [Data Storage](#-data-storage)
-* [Privacy](#-privacy)
-* [Responsive Design](#-responsive-design)
-* [CSS Architecture](#-css-architecture)
-* [Installation & Setup](#-installation--setup)
-* [Running with VS Code Live Server](#-running-with-vs-code-live-server)
-* [Deployment](#-deployment)
-* [GitHub Pages Deployment](#-github-pages-deployment)
-* [Future Improvements](#-future-improvements)
-* [Contributing](#-contributing)
-* [Project Links](#-project-links)
-* [Project Highlights](#-project-highlights)
-* [Author](#-author)
-* [License](#-license)
-* [Support](#-support)
-
----
 
 # 📌 About StudySathi
 
