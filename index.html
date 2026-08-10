@@ -77,87 +77,80 @@
 
 
             <!-- Navigation -->
-            <nav class="sidebar-nav">
+                    <nav class="sidebar-nav" data-navigation>
 
-                <p class="nav-section-title">
-                    MAIN
-                </p>
+            <p class="nav-section-title">
+                MAIN
+            </p>
 
-                <a
-                    href="#dashboard"
-                    class="nav-item active"
-                    data-section="dashboard"
-                >
-                    <span class="nav-icon">🏠</span>
-                    <span>Dashboard</span>
-                </a>
+            <a
+                href="#dashboard"
+                class="nav-item active"
+                data-section="dashboard"
+            >
+                <span class="nav-icon">🏠</span>
+                <span>Dashboard</span>
+            </a>
 
+            <a
+                href="#subjects"
+                class="nav-item"
+                data-section="subjects"
+            >
+                <span class="nav-icon">📚</span>
+                <span>Subjects</span>
+            </a>
 
-                <a
-                    href="#subjects"
-                    class="nav-item"
-                    data-section="subjects"
-                >
-                    <span class="nav-icon">📚</span>
-                    <span>Subjects</span>
-                </a>
+            <a
+                href="#tasks"
+                class="nav-item"
+                data-section="tasks"
+            >
+                <span class="nav-icon">✅</span>
+                <span>Tasks</span>
+            </a>
 
+            <a
+                href="#timer"
+                class="nav-item"
+                data-section="timer"
+            >
+                <span class="nav-icon">⏱️</span>
+                <span>Study Timer</span>
+            </a>
 
-                <a
-                    href="#tasks"
-                    class="nav-item"
-                    data-section="tasks"
-                >
-                    <span class="nav-icon">✅</span>
-                    <span>Tasks</span>
-                </a>
+            <a
+                href="#goals"
+                class="nav-item"
+                data-section="goals"
+            >
+                <span class="nav-icon">🎯</span>
+                <span>Goals</span>
+            </a>
 
+            <a
+                href="#notes"
+                class="nav-item"
+                data-section="notes"
+            >
+                <span class="nav-icon">📝</span>
+                <span>Notes</span>
+            </a>
 
-                <a
-                    href="#timer"
-                    class="nav-item"
-                    data-section="timer"
-                >
-                    <span class="nav-icon">⏱️</span>
-                    <span>Study Timer</span>
-                </a>
+            <p class="nav-section-title nav-section-secondary">
+                SYSTEM
+            </p>
 
+            <a
+                href="#settings"
+                class="nav-item"
+                data-section="settings"
+            >
+                <span class="nav-icon">⚙️</span>
+                <span>Settings</span>
+            </a>
 
-                <a
-                    href="#goals"
-                    class="nav-item"
-                    data-section="goals"
-                >
-                    <span class="nav-icon">🎯</span>
-                    <span>Goals</span>
-                </a>
-
-
-                <a
-                    href="#notes"
-                    class="nav-item"
-                    data-section="notes"
-                >
-                    <span class="nav-icon">📝</span>
-                    <span>Notes</span>
-                </a>
-
-
-                <p class="nav-section-title nav-section-secondary">
-                    SYSTEM
-                </p>
-
-
-                <a
-                    href="#settings"
-                    class="nav-item"
-                    data-section="settings"
-                >
-                    <span class="nav-icon">⚙️</span>
-                    <span>Settings</span>
-                </a>
-
-            </nav>
+        </nav>
 
 
             <!-- Sidebar Footer -->
@@ -280,6 +273,7 @@
             <section
                 class="dashboard-section"
                 id="dashboard"
+                data-app-section
             >
 
                 <!-- Welcome -->
@@ -980,6 +974,7 @@
             <section
                 class="content-section hidden-section"
                 id="subjects"
+                data-app-section
             >
 
                 <div class="section-page-header">
@@ -1028,6 +1023,7 @@
             <section
                 class="content-section hidden-section"
                 id="tasks"
+                data-app-section
             >
 
                 <div class="section-page-header">
@@ -1109,6 +1105,7 @@
             <section
                 class="content-section hidden-section"
                 id="timer"
+                data-app-section
             >
 
                 <div class="section-page-header">
@@ -1226,6 +1223,7 @@
             <section
                 class="content-section hidden-section"
                 id="goals"
+                data-app-section
             >
 
                 <div class="section-page-header">
@@ -1274,6 +1272,7 @@
             <section
                 class="content-section hidden-section"
                 id="notes"
+                data-app-section
             >
 
                 <div class="section-page-header">
@@ -1322,6 +1321,7 @@
             <section
                 class="content-section hidden-section"
                 id="settings"
+                data-app-section
             >
 
                 <div class="section-page-header">
@@ -1821,14 +1821,18 @@
          JAVASCRIPT
     ====================================================== -->
 
-    <script src="js/storage.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/tasks.js"></script>
-    <script src="js/subjects.js"></script>
-    <script src="js/timer.js"></script>
-    <script src="js/notes.js"></script>
-    <script src="js/dashboard.js"></script>
-    <script src="js/app.js"></script>
+    <!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
 
-</body>
+        <script src="js/storage.js"></script>
+        <script src="js/ui.js"></script>
+        <script src="js/tasks.js"></script>
+        <script src="js/subjects.js"></script>
+        <script src="js/timer.js"></script>
+        <script src="js/notes.js"></script>
+        <script src="js/dashboard.js"></script>
+        <script src="js/app.js"></script>
+
+        </body>
 </html>

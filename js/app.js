@@ -110,133 +110,118 @@ const StudySathiApp = {
        SHOW SECTION
     ====================================================== */
 
-    showSection(
-        section
+    showSection(section) {
+
+    const target = document.getElementById(section);
+
+    if (!target) {
+        console.warn(
+            `Section "${section}" not found.`
+        );
+        return;
+    }
+
+
+    /*
+     * Hide all application sections
+     */
+    const sections = document.querySelectorAll(
+        "[data-app-section]"
+    );
+
+
+    sections.forEach(element => {
+
+        element.classList.remove("active");
+
+        element.classList.add("hidden-section");
+
+        element.hidden = true;
+
+        element.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+    });
+
+
+    /*
+     * Show selected section
+     */
+    target.classList.remove("hidden-section");
+
+    target.classList.add("active");
+
+    target.hidden = false;
+
+    target.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    /*
+     * Update current section
+     */
+    this.currentSection = section;
+
+
+    /*
+     * Update navigation state
+     */
+    this.updateNavigationState(section);
+
+
+    /*
+     * Refresh dashboard when opened
+     */
+    if (
+        section === "dashboard" &&
+        typeof DashboardManager !== "undefined"
     ) {
 
-        const target =
-            document.getElementById(
-                section
-            );
-
-
-        if (!target) {
-
-            console.warn(
-                `Section "${section}" not found.`
-            );
-
-            return;
-
-        }
-
-
-        /*
-         * Hide all application sections.
-         */
-
-        const sections =
-            document.querySelectorAll(
-                "[data-app-section]"
-            );
-
-
-        sections.forEach(
-            element => {
-
-                element.classList.remove(
-                    "active"
-                );
-
-                element.hidden =
-                    true;
-
-            }
-        );
-
-
-        /*
-         * Display selected section.
-         */
-
-        target.classList.add(
-            "active"
-        );
-
-
-        target.hidden =
-            false;
-
-
-        this.currentSection =
-            section;
-
-
-        /*
-         * Update navigation state.
-         */
-
-        this.updateNavigationState(
-            section
-        );
-
-
-        /*
-         * Update dashboard when
-         * user returns to it.
-         */
-
         if (
-            section ===
-            "dashboard"
+            typeof DashboardManager.refresh ===
+            "function"
         ) {
-
-            if (
-                typeof DashboardManager !==
-                "undefined"
-            ) {
-
-                DashboardManager.refresh();
-
-            }
-
+            DashboardManager.refresh();
         }
 
-
-        /*
-         * Scroll to top.
-         */
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
+    }
 
 
-        /*
-         * Update browser history.
-         */
+    /*
+     * Scroll to top
+     */
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
-        try {
 
-            history.replaceState(
-                null,
-                "",
-                `#${section}`
-            );
+    /*
+     * Update browser URL
+     */
+    try {
 
-        }
+        history.replaceState(
+            null,
+            "",
+            `#${section}`
+        );
 
-        catch (error) {
+    }
+    catch (error) {
 
-            console.warn(
-                "Could not update URL.",
-                error
-            );
+        console.warn(
+            "Could not update URL.",
+            error
+        );
 
-        }
+    }
 
-    },
+},
 
 
     /* =====================================================
